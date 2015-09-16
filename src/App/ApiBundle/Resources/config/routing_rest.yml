@@ -1,3 +1,7 @@
-api_list:
+api_torrents:
     type: rest
     resource: App\ApiBundle\Controller\TorrentController
+    
+api_list:
+    type: rest
+    resource: App\ApiBundle\Controller\ListController

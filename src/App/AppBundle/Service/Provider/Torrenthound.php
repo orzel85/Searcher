@@ -25,6 +25,9 @@ class Torrenthound extends Template {
         $xpath = new \DOMXpath($doc);
         $searchTableList = $xpath->query('//table[@class="searchtable"]');
         $searchTable = $searchTableList[1];
+        if(!is_object($searchTable)) {
+            return null;
+        }
         $trList = $searchTable->childNodes;
         $length = $trList->length;
         $torrentsList = array();

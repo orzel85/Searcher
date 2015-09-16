@@ -123,7 +123,7 @@ class TestController extends Controller
         $query = 'mr robot s01e04 720p';
         $query = 'harry potter';
         $service = $this->get('provider_controller');
-        $service->setProviderCode(ProviderController::ISOHUNT);
+        $service->setProviderCode(ProviderController::TORRENTHOUND);
         $provider = $service->getProvider();
         $provider->setPage($page);
         $provider->setQuery($query);

@@ -28,9 +28,9 @@ class TorrentsListExecute {
     }
     
     private function dispatchParameters() {
-        $this->torrentsListService->setQueryFromRequest("mr robot s01e05 720p");
-        $this->torrentsListService->setPage(1);
-        $this->torrentsListService->setProviderCode(ProviderController::TORRENTHOUND);
+        $this->torrentsListService->setQueryFromRequest($this->request['query']);
+        $this->torrentsListService->setPage($this->request['page']);
+        $this->torrentsListService->setProviderCode($this->request['provider']);
     }
     
     public function getTorrentsList() {

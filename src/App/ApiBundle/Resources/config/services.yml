@@ -17,3 +17,10 @@ services:
         arguments:
             - @torrents_list
 
+    get_all_torrents:
+        class: App\AppBundle\Service\GetAllTorrents
+        
+    get_all_torrents_execute:
+        class: App\AppBundle\Service\GetAllTorrentsExecute
+        arguments:
+            - @get_all_torrents

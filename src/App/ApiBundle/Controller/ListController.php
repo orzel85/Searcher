@@ -9,12 +9,12 @@ use FOS\RestBundle\Routing\ClassResourceInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 
-class TorrentController extends FOSRestController implements ClassResourceInterface {
+class ListController extends FOSRestController implements ClassResourceInterface {
 
     public function cgetAction(Request $request) {
-        $service = $this->get('torrents_list_execute');
+        $service = $this->get('get_all_torrents_execute');
         $service->setRequest($request->query->all());
-        $list = $service->getTorrentsListAsArray();
+        $list = $service->getAllTorrentsAsArray();
         return $list;
     }
     

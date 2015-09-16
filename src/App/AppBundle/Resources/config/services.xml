@@ -8,7 +8,6 @@
     <parameters>
         <parameter key="app.example.class">App\AppBundle\Example</parameter>
     </parameters>
-
     <services>
         <service id="app.example" class="%app.example.class%">
             <argument type="service" id="service_id" />
