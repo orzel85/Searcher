@@ -1,0 +1,39 @@
+app_api_homepage:
+    pattern:  /hello/{name}
+    defaults: { _controller: AppApiBundle:Default:index }
+    
+app_api_torrent_list_torrenthound:
+    pattern: /test/listTorrenthound/{query}/{page}
+    defaults: { _controller: AppApiBundle:Test:listTorrenthound }
+        
+app_api_torrent_list_torrentdownloads:
+    pattern: /test/listTorrentdownloads/{query}/{page}
+    defaults: { _controller: AppApiBundle:Test:listTorrentdownloads }
+    
+app_api_torrent_list_bitsnoop:
+    pattern: /test/listBitsnoop/{query}/{page}
+    defaults: { _controller: AppApiBundle:Test:listBitsnoop }
+    
+app_api_torrent_list_piratebayorg:
+    pattern: /test/listPiratebayorg/{query}/{page}
+    defaults: { _controller: AppApiBundle:Test:listPiratebayorg }
+    
+app_api_torrent_list_torrentreactor:
+    pattern: /test/listTorrentreactor/{query}/{page}
+    defaults: { _controller: AppApiBundle:Test:listTorrentreactor }
+    
+app_api_torrent_list_extratorrent:
+    pattern: /test/listExtratorrent/{query}/{page}
+    defaults: { _controller: AppApiBundle:Test:listExtratorrent }
+    
+app_api_torrent_list_kickasstorrent:
+    pattern: /test/listKickasstorrent/{query}/{page}
+    defaults: { _controller: AppApiBundle:Test:listKickasstorrent }
+    
+app_api_torrent_list_mononova:
+    pattern: /test/listMononova/{query}/{page}
+    defaults: { _controller: AppApiBundle:Test:listMononova }
+    
+app_api_test:
+    pattern:  /test/test
+    defaults: { _controller: AppApiBundle:Test:test }

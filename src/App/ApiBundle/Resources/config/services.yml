@@ -1,0 +1,19 @@
+parameters:
+#    app_api.example.class: App\ApiBundle\Example
+    app.provider.controller: App\AppBundle\Service\Provider\Controller
+
+services:
+    provider_controller:
+        class: %app.provider.controller%
+        
+    torrents_list:
+        class: App\AppBundle\Service\TorrentsList
+        arguments: 
+            - @doctrine.orm.entity_manager
+            - @provider_controller
+            
+    torrents_list_execute:
+        class: App\AppBundle\Service\TorrentsListExecute
+        arguments:
+            - @torrents_list
+
