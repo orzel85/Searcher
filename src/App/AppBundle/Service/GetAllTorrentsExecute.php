@@ -33,7 +33,6 @@ class GetAllTorrentsExecute {
     private function setPage() {
         $page = 1;
         $this->getAllTorrentsService->setPage($page);
-        
     }
     
     private function setQuery() {

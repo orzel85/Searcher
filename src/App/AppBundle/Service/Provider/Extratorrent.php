@@ -13,7 +13,6 @@ class Extratorrent extends Template {
 
     public function getTorrentList() {
         $url = $this->createUrl();
-        var_dump($url);
         $pageContent = file_get_contents($url);
         $doc = new \DOMDocument();
         libxml_use_internal_errors(true);
