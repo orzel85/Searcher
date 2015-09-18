@@ -2,6 +2,8 @@
 
 namespace App\AppBundle\Service;
 
+use App\AppBundle\Helper\LinkParametersBuilder;
+
 class GetAllTorrentsExecute {
     
     private $request;
@@ -31,12 +33,12 @@ class GetAllTorrentsExecute {
     }
     
     private function setPage() {
-        $page = 1;
+        $page = $this->request[LinkParametersBuilder::PAGE];
         $this->getAllTorrentsService->setPage($page);
     }
     
     private function setQuery() {
-        $query = urlencode('harry potter');
+        $query = urlencode($this->request[LinkParametersBuilder::QUERY]);
         $this->getAllTorrentsService->setQuery($query);
     }
     

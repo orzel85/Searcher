@@ -1,11 +1,30 @@
-<html>
+<html ng-app="myApp">
     <head>
         <title>Searcher</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-route.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-resource.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular-animate.min.js"></script>
+        {% block javascript %}
+
+                {% javascripts
+                    '@AppWebBundle/Resources/public/js/app.js'
+                    
+                %}
+                <script src="{{ asset_url }}"></script>
+            {% endjavascripts %}
+        {% endblock %}
+            {% stylesheets
+                "@AppWebBundle/Resources/public/css/styles.css"
+            
+            %}
+                <link rel="stylesheet" href="{{ asset_url }}" />
+            {% endstylesheets %}
+
     </head>
     <body>
-        <div id="content">
-            {% block content %}
-            {% endblock %}
-        </div>
+        {% include 'AppWebBundle::header.html.twig' %}
+        {% include 'AppWebBundle::content.html.twig' %}
+{#        {% include 'AppWebBundle::footer.html.twig' %}#}
     </body>
 </html>

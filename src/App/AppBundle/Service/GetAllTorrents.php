@@ -46,7 +46,9 @@ class GetAllTorrents {
         $tempArray = array();
         foreach($result as $r) {
             $tempArray = json_decode($r);
-            $return = array_merge($return, $tempArray);
+            if(is_array($tempArray)) {
+                $return = array_merge($return, $tempArray);
+            }
         }
         return $return;
     }
@@ -116,8 +118,8 @@ class GetAllTorrents {
         $return['peers'] = $obj->peers;
         $return['size'] = $obj->size;
         $return['sizeOriginal'] = $obj->sizeOriginal;
-        $return['createDate'] = $obj->createDate;
-        $return['updateDate'] = $obj->updateDate;
+//        $return['createDate'] = $obj->createDate;
+//        $return['updateDate'] = $obj->updateDate;
         return $return;
     }
     
