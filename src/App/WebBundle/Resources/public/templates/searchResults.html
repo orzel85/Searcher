@@ -31,7 +31,7 @@
         <tbody>
             <tr ng-repeat="torrent in list | filter:nameFilter | orderBy : orderField : orderReverse">
                 <td class="torrentLogo">
-
+                    <img src="/bundles/appweb/images/provider/{{torrent.provider}}.gif" />
                 </td>
                 <td class="torrentName"><a href="{{torrent.link}}" target="_blank" >{{torrent.name}}</a></td>
                 <td class="torrentSize">{{torrent.size}} MB</td>
