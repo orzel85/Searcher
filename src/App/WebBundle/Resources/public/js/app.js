@@ -27,15 +27,21 @@ myApp.config(function($routeProvider){
             ;
 });
 
-myApp.controller('mainController',  function($scope, $log, $http, $routeParams){
+myApp.controller('mainController',  function($scope, $log, $http, $routeParams,$location){
     console.log("mainController");
+    
+    $scope.submit = function() {
+        $location.path('/searchResults/' + $scope.query);
+    }
     
 });
 
-myApp.controller('formController',  function($scope, $log, $http, $routeParams){
+myApp.controller('formController',  function($scope, $log, $http, $routeParams, $location){
     console.log("formController");
     $scope.page = 1;
     $scope.list = [];
+    $scope.orderField = 'seeds';
+    $scope.orderReverse = true;
     $scope.query = $routeParams.queryParam;
     console.log($routeParams);
     
@@ -56,10 +62,11 @@ myApp.controller('formController',  function($scope, $log, $http, $routeParams){
         console.log(link);
         console.log('sending...');
         $http.get(link).success(function(data){
-        console.log(data.collection);
-        $scope.list.push.apply($scope.list, data.collection);
-        console.log($scope.list);
-    });
+            console.log(data.collection);
+            $scope.list.push.apply($scope.list, data.collection);
+            console.log($scope.list);
+        });
+    }
     
     $scope.newSearch = function() {
         console.log('new search');
@@ -72,5 +79,10 @@ myApp.controller('formController',  function($scope, $log, $http, $routeParams){
             console.log($scope.list);
         });
     }
+    
+    $scope.submit = function() {
+        console.log('submit');
+        $location.path('/searchResults/' + $scope.query);
     }
+    
 });
