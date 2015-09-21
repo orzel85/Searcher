@@ -8,6 +8,13 @@ body {
     font-size: 12;
 }
 
+button {
+    -webkit-box-shadow: none;     
+    -webkit-box-shadow: none;   
+    box-shadow: none;
+    border: 1px solid #f2f2f2;
+}
+
 .clear {
     clear:both;
 }
@@ -81,19 +88,24 @@ body {
 
 #query {
     width: 700px;
-    height: 30px;
+    height: 38px;
     float: left;
     font-size: 20px;
 }
 
 #searchButton {
     display: block;
-    padding:5px 15px;
+    padding:10px 25px;
     float: left;
     color: white;
     background-color: #336699;
     text-decoration: none;
     margin-left: 10px;
+    font-size: 14px;
+    -webkit-box-shadow: none;     
+    -webkit-box-shadow: none;   
+    box-shadow: none;
+    border: 1px solid #f2f2f2;
 
 }
 
@@ -106,6 +118,26 @@ body {
     text-decoration: none;
     font-weight: bold;
     margin:0 auto;
+}
+
+#getMoreButton:disabled {
+    background-color: #f8f8f8;
+    color: #75759c;
+}
+
+#searchButton:disabled {
+    background-color: #f8f8f8;
+    color: #75759c;
+}
+
+#query:disabled {
+    background-color: #f8f8f8;
+    -webkit-box-shadow: none;     
+    -webkit-box-shadow: none;   
+    box-shadow: none;
+    border: 1px solid #f2f2f2;
+    color: #75759c;
+    
 }
 
 #getMoreButton:hover {
@@ -208,4 +240,16 @@ body {
     margin-top: 20px;
     width: 1000px;
     height: 100px;
+}
+
+
+#ajaxLoaderImage {
+    height: 150px;
+    width: 150px;
+    margin-left: 425px;
+}
+
+#loadingScreen #info {
+    font-size: 20px;
+    margin-left: 425px;
 }

@@ -43,45 +43,39 @@ myApp.controller('formController',  function($scope, $log, $http, $routeParams, 
     $scope.orderField = 'seeds';
     $scope.orderReverse = true;
     $scope.query = $routeParams.queryParam;
-    console.log($routeParams);
-    
+    $scope.disabled = true;
+    $scope.hideResultsTable = true;
+    $scope.loadingImage = true;
     var link = '/api/lists.json?page='+ $scope.page +'&query=' + encodeURI($routeParams.queryParam);
-    console.log(link);
-    console.log('sending...');
     $http.get(link).success(function(data){
-        console.log(data.collection);
         $scope.list.push.apply($scope.list, data.collection);
-        console.log($scope.list);
+        $scope.disabled = false;
+        $scope.hideResultsTable = false;
+        $scope.loadingImage = false;
     });
 
     $scope.getNextPage = function() {
-        console.log($scope.page);
         $scope.page++;
-        console.log($scope.page);
         var link = '/api/lists.json?page='+ $scope.page +'&query=' + encodeURI($routeParams.queryParam);
-        console.log(link);
-        console.log('sending...');
+        $scope.disabled = true;
+        $scope.loadingImage = true;
         $http.get(link).success(function(data){
-            console.log(data.collection);
             $scope.list.push.apply($scope.list, data.collection);
-            console.log($scope.list);
+            $scope.disabled = false;
+            $scope.loadingImage = false;
         });
     }
     
     $scope.newSearch = function() {
-        console.log('new search');
         $scope.page = 1;
         $scope.list = [];
         var link = '/api/lists.json?page='+ $scope.page +'&query=' + encodeURI($routeParams.queryParam);
         $http.get(link).success(function(data){
-            console.log(data.collection);
             $scope.list.push.apply($scope.list, data.collection);
-            console.log($scope.list);
         });
     }
     
     $scope.submit = function() {
-        console.log('submit');
         $location.path('/searchResults/' + $scope.query);
     }
     
