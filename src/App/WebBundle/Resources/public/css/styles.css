@@ -15,6 +15,18 @@ button {
     border: 1px solid #f2f2f2;
 }
 
+button:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-style: solid;
+}
+
+.button:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-style: solid;
+}
+
 input[type="submit"]:hover {
     cursor: pointer;
 }
@@ -48,7 +60,6 @@ input[type="submit"]:hover {
     color: white;
     background-color: #336699;
     text-decoration: none;
-
 }
 
 #header .button:hover {
@@ -97,6 +108,7 @@ input[type="submit"]:hover {
     height: 38px;
     float: left;
     font-size: 20px;
+    padding-left: 10px;
 }
 
 #searchButton {
@@ -190,9 +202,14 @@ input[type="submit"]:hover {
     padding: 5px 20px;
 }
 
-#searchResults thead tr th {
+#searchResults #headerSearchResults {
     font-size: 13px;
     font-weight: bold;
+}
+
+#searchResults #headerSearchResults th:hover {
+    cursor: pointer;
+    background-color: #f8f8f8;
 }
 
 .torrentName a:hover {
@@ -229,11 +246,6 @@ input[type="submit"]:hover {
     text-align: left;
 }
 
-#searchResults tr th:hover {
-    cursor: pointer;
-    background-color: #f8f8f8;
-}
-
 #torrentLogoHeader {
     width: 7%
 }
@@ -266,4 +278,61 @@ input[type="submit"]:hover {
 #loadingScreen #info {
     font-size: 20px;
     margin-left: 425px;
+}
+
+#filters #filtersHeader{
+    font-size: 20px;
+}
+#filters {
+    width: inherit;
+    font-size: 12px;
+}
+
+#filter table tr td {
+    font-size: 12px;
+}
+
+#filters #nameFilter {
+    width: 500px;
+}
+
+#filters #sizeFilter {
+    width: 60px;
+}
+
+#filters #seedsFilter {
+    width: 75px;
+}
+
+#filters #peersFilter {
+    width: 75px;
+}
+
+#filters {
+    margin-top: 10px;
+}
+
+#filters table tr td{
+    padding-bottom: 5px;
+    padding-top: 5px;
+    font-size: 12px;
+}
+
+.font12px {
+    font-size: 12px;
+}
+
+#filters .button {
+    display: block;
+    padding: 2px 10px;
+    color: white;
+    background-color: #336699;
+    text-decoration: none;
+    font-size: 12px;
+    float: left;
+    margin-left: 5px;
+}
+
+#filters input[type="text"] {
+    padding-left: 5px;
 }

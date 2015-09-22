@@ -47,6 +47,10 @@ myApp.controller('formController',  function($scope, $log, $http, $routeParams, 
     $scope.hideResultsTable = true;
     $scope.loadingImage = true;
     $scope.showSortArrow = 'order_' + $scope.orderField + '_' + (($scope.orderReverse) ? 'desc' : 'asc');
+    $scope.sizeFilter = 0;
+    $scope.seedsFilter = 0;
+    $scope.peersFilter = 0;
+    
     console.log($scope.showSortArrow);
     var link = '/api/lists.json?page='+ $scope.page +'&query=' + encodeURI($routeParams.queryParam);
     $http.get(link).success(function(data){
@@ -87,6 +91,18 @@ myApp.controller('formController',  function($scope, $log, $http, $routeParams, 
         var orderType = ($scope.orderReverse) ? 'desc' : 'asc';
         $scope.showSortArrow = 'order_' + $scope.orderField + '_' + orderType;
         console.log($scope.showSortArrow);
+    }
+    
+    $scope.filterSeeds = function(item){
+        return item.seeds >= $scope.seedsFilter ;
+    }
+    
+    $scope.filterPeers = function(item){
+        return item.peers >= $scope.peersFilter ;
+    }
+    
+    $scope.filterSize = function(item){
+        return item.size >= $scope.sizeFilter ;
     }
     
 });
