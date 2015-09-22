@@ -27,7 +27,7 @@ myApp.config(function($routeProvider){
             ;
 });
 
-myApp.controller('mainController',  function($scope, $log, $http, $routeParams,$location){
+myApp.controller('mainController',  function($scope, $location){
     console.log("mainController");
     
     $scope.submit = function() {
@@ -47,7 +47,7 @@ myApp.controller('formController',  function($scope, $log, $http, $routeParams, 
     $scope.hideResultsTable = true;
     $scope.loadingImage = true;
     $scope.showSortArrow = 'order_' + $scope.orderField + '_' + (($scope.orderReverse) ? 'desc' : 'asc');
-    
+    console.log($scope.showSortArrow);
     var link = '/api/lists.json?page='+ $scope.page +'&query=' + encodeURI($routeParams.queryParam);
     $http.get(link).success(function(data){
         $scope.list.push.apply($scope.list, data.collection);

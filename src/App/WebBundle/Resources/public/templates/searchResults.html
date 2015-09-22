@@ -2,8 +2,8 @@
     <div id="queryDiv">
         <div id="queryDivInner">
             <form name="queryForm" ng-submit="submit(queryForm)"  >
-                <input type="text" name="query" ng-model="query" id="query" />
-                <input type="submit" id="searchButton" value="Search" />
+                <input type="text" name="query" ng-model="query" id="query" ng-disabled="disabled" />
+                <input type="submit" id="searchButton" ng-disabled="disabled" value="Search" />
             </form>
         </div>
         <div class="clear"></div>

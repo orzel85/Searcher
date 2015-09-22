@@ -3,6 +3,7 @@
 namespace App\AppBundle\Service;
 
 use App\AppBundle\Helper\TorrentList as TorrentsListHelper;
+use App\AppBundle\Helper\Filter\SeedsFilter;
 
 class TorrentsList {
     
@@ -63,8 +64,6 @@ class TorrentsList {
             $this->createQueryInDb();
             $freshCreated = true;
         }
-//        $freshCreated = true;
-//        if(false) {
         if($freshCreated) {
             $torrentsList = $this->getLinksFromExternalSystems();
         }else{
@@ -74,6 +73,7 @@ class TorrentsList {
                 $torrentsList = $this->getLinksFromExternalSystems();
             }
         }
+        $torrentsList = SeedsFilter::getLimitedBySeeds($torrentsList, 1);
         $this->torrentsList = $torrentsList;
     }
     

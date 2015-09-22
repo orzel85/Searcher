@@ -111,8 +111,8 @@ class TestController extends Controller
         $service->setPage($page);
         $service->setProviderCode(ProviderController::MONONOVA);
         $service->execute();
-//        $list = $service->getTorrentsList();
-        $list = $service->getTorrentsListAsArray();
+        $list = $service->getTorrentsList();
+//        $list = $service->getTorrentsListAsArray();
         var_dump($list);
         die();
         return $this->render('AppApiBundle:Torrent:list.html.twig', array('list' => $list));

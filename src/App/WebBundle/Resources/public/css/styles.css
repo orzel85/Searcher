@@ -15,6 +15,10 @@ button {
     border: 1px solid #f2f2f2;
 }
 
+input[type="submit"]:hover {
+    cursor: pointer;
+}
+
 .clear {
     clear:both;
 }
@@ -51,12 +55,14 @@ button {
     text-decoration: underline;
 }
 
-#header #logo {
+#header #logo a{
     float: left;
     font-size: 35px;
     margin-left: 150px;
     color: #336699;
     font-weight: bold;
+    display: block;
+    text-decoration: none;
 }
 
 #footer {
@@ -163,7 +169,7 @@ button {
 
 #searchResults tbody td {
     border-collapse: collapse;
-    border:1px solid #ddd;
+    border:1px dashed #ddd;
     border-left: 0px;
     border-right: 0px;
     font-size: 13px;
