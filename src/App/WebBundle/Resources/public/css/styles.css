@@ -180,7 +180,7 @@ button {
 }
 
 .torrentName {
-    width: 71%;
+    width: 67%;
     padding: 5px 20px;
 }
 
@@ -205,13 +205,13 @@ button {
 }
 
 .torrentSeeds {
-    width: 5%;
+    width: 7%;
     text-align: center;
     color: green;
 }
 
 .torrentPeers {
-    width: 5%;
+    width: 7%;
     text-align: center;
     color: red;
 }
@@ -219,8 +219,13 @@ button {
 #searchResults tr #torrentNameHeader {
     padding-left: 20px;
     padding-right: auto;
-    width: 71%;
+    width: 67%;
     text-align: left;
+}
+
+#searchResults tr th:hover {
+    cursor: pointer;
+    background-color: #f8f8f8;
 }
 
 #torrentLogoHeader {
@@ -232,12 +237,11 @@ button {
 }
 
 #torrentSeedsHeader {
-    width: 5%;
+    width: 7%;
 }
 
 #torrentPeersHeader {
-    width: 5%;
-    
+    width: 7%;
 }
 
 #getMore {

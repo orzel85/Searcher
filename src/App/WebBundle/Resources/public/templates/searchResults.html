@@ -11,6 +11,55 @@
     <table id="searchResults" ng-hide="hideResultsTable">
         <thead>
             <tr>
+                <th id="torrentLogoHeader" ng-click="order('provider')">
+
+                </th>
+                <th id="torrentNameHeader" ng-click="order('name')">
+                    <span>
+                        Name
+                    </span>
+                    <span ng-show=" showSortArrow === 'order_name_asc' ">
+                        &#8593;
+                    </span>
+                    <span ng-show=" showSortArrow === 'order_name_desc' ">
+                        &#8595;
+                    </span>
+                </th>
+                <th id="torrentSizeHeader" ng-click="order('size')">
+                    <span>
+                        Size
+                    </span>
+                    <span ng-show=" showSortArrow === 'order_size_asc' ">
+                        &#8593;
+                    </span>
+                    <span ng-show=" showSortArrow === 'order_size_desc' ">
+                        &#8595;
+                    </span>
+                </th>
+                <th id="torrentSeedsHeader" ng-click="order('seeds')">
+                    <span>
+                        Seeds
+                    </span>
+                    <span ng-show=" showSortArrow === 'order_seeds_asc' ">
+                        &#8593;
+                    </span>
+                    <span ng-show=" showSortArrow === 'order_seeds_desc' ">
+                        &#8595;
+                    </span>
+                </th>
+                <th id="torrentPeersHeader" ng-click="order('peers')">
+                    <span>
+                        Peers
+                    </span>
+                    <span ng-show=" showSortArrow === 'order_peers_asc' ">
+                        &#8593;
+                    </span>
+                    <span ng-show=" showSortArrow === 'order_peers_desc' ">
+                        &#8595;
+                    </span>
+                </th>
+            </tr>
+<!--            <tr>
                 <th id="torrentLogoHeader">
 
                 </th>
@@ -26,7 +75,7 @@
                 <th id="torrentPeersHeader">
                     Peers
                 </th>
-            </tr>
+            </tr>-->
         </thead>
         <tbody>
             <tr ng-repeat="torrent in list | filter:nameFilter | orderBy : orderField : orderReverse">

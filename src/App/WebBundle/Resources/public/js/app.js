@@ -46,6 +46,8 @@ myApp.controller('formController',  function($scope, $log, $http, $routeParams, 
     $scope.disabled = true;
     $scope.hideResultsTable = true;
     $scope.loadingImage = true;
+    $scope.showSortArrow = 'order_' + $scope.orderField + '_' + (($scope.orderReverse) ? 'desc' : 'asc');
+    
     var link = '/api/lists.json?page='+ $scope.page +'&query=' + encodeURI($routeParams.queryParam);
     $http.get(link).success(function(data){
         $scope.list.push.apply($scope.list, data.collection);
@@ -77,6 +79,14 @@ myApp.controller('formController',  function($scope, $log, $http, $routeParams, 
     
     $scope.submit = function() {
         $location.path('/searchResults/' + $scope.query);
+    }
+    
+    $scope.order = function(fieldName) {
+        $scope.orderReverse = ($scope.orderField === fieldName) ? !$scope.orderReverse : false;
+        $scope.orderField = fieldName;
+        var orderType = ($scope.orderReverse) ? 'desc' : 'asc';
+        $scope.showSortArrow = 'order_' + $scope.orderField + '_' + orderType;
+        console.log($scope.showSortArrow);
     }
     
 });
