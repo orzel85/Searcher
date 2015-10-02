@@ -49,7 +49,7 @@ class QueryTorrentsRepository extends EntityRepository {
      * @param type $providerCode
      * @param type $page
      */
-    public function updateList(Query $query, array $newTorrentsList, $providerCode, $page) {
+    public function updateList(Query $query, $newTorrentsList, $providerCode, $page) {
         $oldList = $this->getTorrentsByQuery($query, $providerCode, $page);
         $newTorrentListLength = count($newTorrentsList);
         for($i = 0; $i < $newTorrentListLength ; $i++) {

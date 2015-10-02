@@ -4,6 +4,7 @@ namespace App\ApiBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use App\AppBundle\Service\Provider\Controller as ProviderController;
+use Symfony\Component\HttpFoundation\Request;
 
 
 class TestController extends Controller
@@ -15,7 +16,7 @@ class TestController extends Controller
     
     public function listTorrenthoundAction($query, $page) {
         $service = $this->get('torrents_list');
-        $service->setQueryFromRequest("mr robot s01e05 720p");
+        $service->setQueryFromRequest("flash s01e01");
         $service->setPage($page);
         $service->setProviderCode(ProviderController::TORRENTHOUND);
         $service->execute();
@@ -118,17 +119,24 @@ class TestController extends Controller
         return $this->render('AppApiBundle:Torrent:list.html.twig', array('list' => $list));
     }
     
-    public function testAction() {
-        $page = 2;
-        $query = 'mr robot s01e04 720p';
-        $query = 'harry potter';
-        $service = $this->get('provider_controller');
-        $service->setProviderCode(ProviderController::TORRENTHOUND);
-        $provider = $service->getProvider();
-        $provider->setPage($page);
-        $provider->setQuery($query);
-        $list = $provider->getTorrentList();
+    public function testAction(Request $request) {
+        $service = $this->get('get_all_torrents_execute');
+        $service->setRequest($request->query->all());
+        $list = $service->getAllTorrentsAsArray();
         var_dump($list);
-        return $this->render('AppApiBundle:Torrent:list.html.twig', array('list' => $list));
+        die();
+        return $list;
+        
+//        $page = 2;
+//        $query = 'mr robot s01e04 720p';
+//        $query = 'harry potter';
+//        $service = $this->get('provider_controller');
+//        $service->setProviderCode(ProviderController::TORRENTHOUND);
+//        $provider = $service->getProvider();
+//        $provider->setPage($page);
+//        $provider->setQuery($query);
+//        $list = $provider->getTorrentList();
+//        var_dump($list);
+//        return $this->render('AppApiBundle:Torrent:list.html.twig', array('list' => $list));
     }
 }

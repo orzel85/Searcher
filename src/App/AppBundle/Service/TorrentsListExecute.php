@@ -28,9 +28,24 @@ class TorrentsListExecute {
     }
     
     private function dispatchParameters() {
-        $this->torrentsListService->setQueryFromRequest($this->request['query']);
-        $this->torrentsListService->setPage($this->request['page']);
-        $this->torrentsListService->setProviderCode($this->request['provider']);
+        $this->setPage();
+        $this->setProvider();
+        $this->setQuery();
+    }
+    
+    private function setPage() {
+        $page = $this->request['page'];
+        $this->torrentsListService->setPage($page);
+    }
+    
+    private function setProvider() {
+        $provider = $this->request['provider'];
+        $this->torrentsListService->setProviderCode($provider);
+    }
+    
+    private function setQuery() {
+        $query = $this->request['query'];
+        $this->torrentsListService->setQueryFromRequest($query);
     }
     
     public function getTorrentsList() {

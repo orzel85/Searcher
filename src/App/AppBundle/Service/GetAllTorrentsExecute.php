@@ -34,11 +34,13 @@ class GetAllTorrentsExecute {
     
     private function setPage() {
         $page = $this->request[LinkParametersBuilder::PAGE];
+//        $page = 1;
         $this->getAllTorrentsService->setPage($page);
     }
     
     private function setQuery() {
         $query = urlencode($this->request[LinkParametersBuilder::QUERY]);
+//        $query = urlencode('arrow s01e01');
         $this->getAllTorrentsService->setQuery($query);
     }
     
