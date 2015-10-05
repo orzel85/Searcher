@@ -1,0 +1,29 @@
+{
+    "name": "obtao/html2pdf-bundle",
+    "description": "This Bundle allows you to generate pdf files into a Symfony2 project.",
+    "keywords": ["generator", "pdf", "file"],
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name":     "Grégory Quatannens",
+            "homepage": "http://obtao.com",
+            "email":    "gregory@obtao.com"
+        },
+        {
+            "name":     "Symfony Community",
+            "homepage": "https://github.com/obtao/Html2PdfBundle/contributors"
+        }        
+    ],
+    "require": {
+        "php":             ">=5.3.0",
+        "symfony/symfony": ">=2.1"
+    },    
+    "autoload": {
+        "psr-0": {
+            "Obtao\\Bundle\\Html2PdfBundle": ""
+        }
+    },
+    "minimum-stability": "dev",
+    "target-dir" : "Obtao/Bundle/Html2PdfBundle"
+}
