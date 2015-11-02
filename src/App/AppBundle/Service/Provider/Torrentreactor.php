@@ -26,22 +26,25 @@ class Torrentreactor extends Template {
         for($i = 1 ; $i < $length ; $i++) {
             if(!empty($trList[$i])) {
                 $torrent = new Torrents();
-                $addToList = $this->parseSinglElement($trList[$i], $torrent);
-                if($addToList) {
-                    $torrentsList[] = $torrent;
-                }
+                $this->parseSinglElement($trList[$i], $torrent);
+                $this->addToTorrentList($torrent);
             }
         }
-        return $torrentsList;
+        return $this->torrentList;
     }
     
     private function parseSinglElement(\DOMElement $domNode, Torrents $torrent) {
         $aList = $domNode->getElementsByTagName('a');
         $linkNode = $aList[0];
         if(empty($linkNode)) {
-            return false;
+            $this->dontAddToTorrentList();
+            return;
         }
         $href = $this->getHrefAttributeFromHyperlinkNode($linkNode);
+        if(is_int(strpos($href, 'http:'))) {
+            $this->dontAddToTorrentList();
+            return;
+        }
         $name = trim($linkNode->nodeValue);
         $tdList = $domNode->getElementsByTagName('td');
         $seeds = $tdList[4]->nodeValue;

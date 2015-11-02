@@ -120,23 +120,24 @@ class TestController extends Controller
     }
     
     public function testAction(Request $request) {
-        $service = $this->get('get_all_torrents_execute');
-        $service->setRequest($request->query->all());
-        $list = $service->getAllTorrentsAsArray();
+//        $service = $this->get('get_all_torrents_execute');
+//        $service->setRequest($request->query->all());
+//        $list = $service->getAllTorrentsAsArray();
+//        var_dump($list);
+//        die();
+//        return $list;
+        
+        $page = 1;
+//        $query = 'mr robot s01e04 720p';
+        $query = 'harry potter';
+        $service = $this->get('provider_controller');
+        $service->setProviderCode(ProviderController::TORRENTREACTOR);
+        $provider = $service->getProvider();
+        $provider->setPage($page);
+        $provider->setQuery($query);
+        $list = $provider->getTorrentList();
         var_dump($list);
         die();
-        return $list;
-        
-//        $page = 2;
-//        $query = 'mr robot s01e04 720p';
-//        $query = 'harry potter';
-//        $service = $this->get('provider_controller');
-//        $service->setProviderCode(ProviderController::TORRENTHOUND);
-//        $provider = $service->getProvider();
-//        $provider->setPage($page);
-//        $provider->setQuery($query);
-//        $list = $provider->getTorrentList();
-//        var_dump($list);
-//        return $this->render('AppApiBundle:Torrent:list.html.twig', array('list' => $list));
+        return $this->render('AppApiBundle:Torrent:list.html.twig', array('list' => $list));
     }
 }

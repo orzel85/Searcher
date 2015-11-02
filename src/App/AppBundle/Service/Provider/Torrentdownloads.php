@@ -25,12 +25,10 @@ class Torrentdownloads extends Template {
         $torrentsList = array();
         for($i = 4 ; $i < $length-3 ; $i++) {
             $torrent = new Torrents();
-            $addToList = $this->parseSingleDiv($divInnerContainerChildren[$i], $torrent);
-            if($addToList) {
-                $torrentsList[] = $torrent;
-            }
+            $this->parseSingleDiv($divInnerContainerChildren[$i], $torrent);
+            $this->addToTorrentList($torrent);
         }
-        return $torrentsList;
+        return $this->torrentList;
     }
     
     private function parseSingleDiv(\DOMElement $domNode, Torrents $torrent) {
@@ -40,7 +38,7 @@ class Torrentdownloads extends Template {
         $hrefNode = $link->getAttributeNode('href');
         $href = $hrefNode->value;
         if(strpos($href, 'www.torrentdownload.ws') != false) {
-            return false;
+            $this->dontAddToTorrentList();
         }
         $name = trim($link->nodeValue);
         $spanList = $domNode->getElementsByTagName('span');

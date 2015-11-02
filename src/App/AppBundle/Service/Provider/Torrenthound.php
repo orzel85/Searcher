@@ -34,9 +34,9 @@ class Torrenthound extends Template {
         for($i = 1 ; $i < $length ; $i++) {
             $torrent = new Torrents();
             $this->parseSingleTr($trList[$i], $torrent);
-            $torrentsList[] = $torrent;
+            $this->addToTorrentList($torrent);
         }
-        return $torrentsList;
+        return $this->torrentList;
     }
     
     private function parseSingleTr(\DOMElement $domNode, Torrents $torrent) {

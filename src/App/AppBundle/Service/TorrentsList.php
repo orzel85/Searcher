@@ -132,8 +132,10 @@ class TorrentsList {
     }
     
     private function updateListOfLinksInDb($newTorrentsList) {
-        $this->queryTorrentsRepository->updateList($this->queryDbObject, $newTorrentsList, $this->providerCode, $this->page);
-        $this->torrentsRepository->updateCreateTorrentList($newTorrentsList);
+        if(!empty($newTorrentsList)) {
+            $this->queryTorrentsRepository->updateList($this->queryDbObject, $newTorrentsList, $this->providerCode, $this->page);
+            $this->torrentsRepository->updateCreateTorrentList($newTorrentsList);
+        }
     }
     
     private function checkIfQueryIsValid() {

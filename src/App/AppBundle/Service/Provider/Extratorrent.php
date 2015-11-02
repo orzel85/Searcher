@@ -28,16 +28,18 @@ class Extratorrent extends Template {
         for($i = 2 ; $i < $length ; $i++) {
             $torrent = new Torrents();
             $this->parseSinglElement($resultsList[$i], $torrent);
-            $torrentsList[] = $torrent;
+            $this->addToTorrentList($torrent);
         }
-//        var_dump($torrentsList);
-        return $torrentsList;
+        return $this->torrentList;
     }
     
     private function parseSinglElement(\DOMElement $domNode, Torrents $torrent) {
         $aList = $domNode->getElementsByTagName('a');
         $link = $aList[$aList->length - 2];
         $href = $this->getHrefAttributeFromHyperlinkNode($link);
+        if(strpos($href, 'extratorrent.cc') != false) {
+            $this->dontAddToTorrentList();
+        }
         $name = $this->getValueFromHyperlinkNode($link);
         $tdList = $domNode->getElementsByTagName('td');
         $seeds = 0;

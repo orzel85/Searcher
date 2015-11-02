@@ -17,11 +17,27 @@ abstract class Template {
     
     protected $query;
     
+    protected $torrentList;
+    
+    protected $addToTorrentList = true;
+    
     abstract public function getTorrentList();
     
     protected function getPageContent($url, $postArray = array(), $curlFlags = array()) {
         $curlService = new Curl();
         return $curlService->send($url, $postArray, $curlFlags);
+    }
+    
+    protected function addToTorrentList($torrent) {
+        if($this->addToTorrentList) {
+            $this->torrentList[] = $torrent;
+        }else{
+            $this->addToTorrentList = true;
+        }
+    }
+    
+    protected function dontAddToTorrentList() {
+        $this->addToTorrentList = false;
     }
     
     /**

@@ -26,9 +26,9 @@ class Kickasstorrent extends Template {
         for($i = 2 ; $i < $length ; $i++) {
             $torrent = new Torrents();
             $this->parseSinglElement($resultsList[$i], $torrent);
-            $torrentsList[] = $torrent;
+            $this->addToTorrentList($torrent);
         }
-        return $torrentsList;
+        return $this->torrentList;
     }
     
     private function parseSinglElement(\DOMElement $domNode, Torrents $torrent) {

@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 class TorrentController extends FOSRestController implements ClassResourceInterface {
 
     public function cgetAction(Request $request) {
+        set_time_limit(300);
         $service = $this->get('torrents_list_execute');
         $service->setRequest($request->query->all());
         $list = $service->getTorrentsListAsArray();

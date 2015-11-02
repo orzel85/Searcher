@@ -26,9 +26,9 @@ class PirateBayOrg extends Template {
         for($i = 1 ; $i < $length ; $i++) {
             $torrent = new Torrents();
             $this->parseSinglElement($trList[$i], $torrent);
-            $torrentsList[] = $torrent;
+            $this->addToTorrentList($torrent);
         }
-        return $torrentsList;
+        return $this->torrentList;
     }
     
     private function parseSinglElement(\DOMElement $domNode, Torrents $torrent) {
