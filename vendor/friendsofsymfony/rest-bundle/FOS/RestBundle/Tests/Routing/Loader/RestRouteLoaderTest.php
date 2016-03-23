@@ -26,8 +26,8 @@ class RestRouteLoaderTest extends LoaderTest
      */
     public function testUsersFixture()
     {
-        $collection     = $this->loadFromControllerFixture('UsersController');
-        $etalonRoutes   = $this->loadEtalonRoutesInfo('users_controller.yml');
+        $collection = $this->loadFromControllerFixture('UsersController');
+        $etalonRoutes = $this->loadEtalonRoutesInfo('users_controller.yml');
 
         $this->assertTrue($collection instanceof RestRouteCollection);
         $this->assertEquals(26, count($collection->all()));
@@ -48,8 +48,8 @@ class RestRouteLoaderTest extends LoaderTest
      */
     public function testResourceFixture()
     {
-        $collection     = $this->loadFromControllerFixture('ArticleController');
-        $etalonRoutes   = $this->loadEtalonRoutesInfo('resource_controller.yml');
+        $collection = $this->loadFromControllerFixture('ArticleController');
+        $etalonRoutes = $this->loadEtalonRoutesInfo('resource_controller.yml');
 
         $this->assertTrue($collection instanceof RestRouteCollection);
         $this->assertEquals(24, count($collection->all()));
@@ -92,8 +92,8 @@ class RestRouteLoaderTest extends LoaderTest
      */
     public function testAnnotatedUsersFixture()
     {
-        $collection     = $this->loadFromControllerFixture('AnnotatedUsersController');
-        $etalonRoutes   = $this->loadEtalonRoutesInfo('annotated_users_controller.yml');
+        $collection = $this->loadFromControllerFixture('AnnotatedUsersController');
+        $etalonRoutes = $this->loadEtalonRoutesInfo('annotated_users_controller.yml');
 
         $this->assertTrue($collection instanceof RestRouteCollection);
         $this->assertEquals(24, count($collection->all()));
@@ -102,14 +102,18 @@ class RestRouteLoaderTest extends LoaderTest
             $route = $collection->get($name);
 
             // Symfony sets _method to keep BC, should be removed in 3.0
-            $params['requirements']['_method'] = implode('|', $params['methods']);
+            if (method_exists('\Symfony\Component\Routing\Route', 'getPattern')) {
+                $params['requirements']['_method'] = implode('|', $params['methods']);
+            } elseif (!isset($params['requirements'])) {
+                $params['requirements'] = array();
+            }
 
             $this->assertNotNull($route, "no route found for '$name'");
             $this->assertEquals($params['path'], $route->getPath(), 'path failed to match for '.$name);
             $this->assertEquals($params['requirements'], $route->getRequirements(), 'requirements failed to match for '.$name);
             $this->assertContains($params['controller'], $route->getDefault('_controller'), 'controller failed to match for '.$name);
             if (isset($params['condition'])) {
-                 $this->assertEquals($params['condition'], $route->getCondition(), 'condition failed to match for '.$name);
+                $this->assertEquals($params['condition'], $route->getCondition(), 'condition failed to match for '.$name);
             }
 
             if (isset($params['options'])) {
@@ -125,15 +129,14 @@ class RestRouteLoaderTest extends LoaderTest
      */
     public function testAnnotatedConditionalUsersFixture()
     {
-
-        if (!method_exists('Symfony\Component\Routing\Annotation\Route','setCondition')) {
+        if (!method_exists('Symfony\Component\Routing\Annotation\Route', 'setCondition')) {
             $this->markTestSkipped('The "Routing" component have a version <2.4');
 
             return;
         }
 
-        $collection     = $this->loadFromControllerFixture('AnnotatedConditionalUsersController');
-        $etalonRoutes   = $this->loadEtalonRoutesInfo('annotated_conditional_controller.yml');
+        $collection = $this->loadFromControllerFixture('AnnotatedConditionalUsersController');
+        $etalonRoutes = $this->loadEtalonRoutesInfo('annotated_conditional_controller.yml');
 
         $this->assertTrue($collection instanceof RestRouteCollection);
         $this->assertEquals(22, count($collection->all()));
@@ -141,8 +144,12 @@ class RestRouteLoaderTest extends LoaderTest
         foreach ($etalonRoutes as $name => $params) {
             $route = $collection->get($name);
 
-            // Symfony sets _method to keep BC, should be removed with 3.0
-            $params['requirements']['_method'] = implode('|', $params['methods']);
+            // Symfony sets _method to keep BC, should be removed in 3.0
+            if (method_exists('\Symfony\Component\Routing\Route', 'getPattern')) {
+                $params['requirements']['_method'] = implode('|', $params['methods']);
+            } elseif (!isset($params['requirements'])) {
+                $params['requirements'] = array();
+            }
 
             $this->assertNotNull($route, "no route found for '$name'");
             $this->assertEquals($params['path'], $route->getPath(), 'path failed to match for '.$name);
@@ -151,12 +158,11 @@ class RestRouteLoaderTest extends LoaderTest
             if (isset($params['condition'])) {
                 $this->assertEquals($params['condition'], $route->getCondition(), 'condition failed to match for '.$name);
             }
-
         }
     }
 
     /**
-     * Test that a custom format annotation is not overwritten
+     * Test that a custom format annotation is not overwritten.
      */
     public function testCustomFormatRequirementIsKept()
     {
@@ -165,8 +171,8 @@ class RestRouteLoaderTest extends LoaderTest
             null,
             array('json' => true, 'xml' => true, 'html' => true)
         );
-        $routeCustom            = $collection->get('custom_user');
-        $routeWithRequirements  = $collection->get('get_user');
+        $routeCustom = $collection->get('custom_user');
+        $routeWithRequirements = $collection->get('get_user');
 
         $this->assertEquals('custom', $routeCustom->getRequirement('_format'));
         $this->assertEquals('json|xml|html', $routeWithRequirements->getRequirement('_format'));
@@ -193,7 +199,7 @@ class RestRouteLoaderTest extends LoaderTest
     }
 
     /**
-     * Test that conventional actions exist and are registered as GET methods
+     * Test that conventional actions exist and are registered as GET methods.
      *
      * @see https://github.com/FriendsOfSymfony/RestBundle/issues/67
      */
@@ -227,7 +233,7 @@ class RestRouteLoaderTest extends LoaderTest
 
     /**
      * Test that custom actions (new/edit/remove) are dumped earlier,
-     * and that developer routes order is kept
+     * and that developer routes order is kept.
      *
      * @see https://github.com/FriendsOfSymfony/RestBundle/issues/379
      */
@@ -249,7 +255,7 @@ class RestRouteLoaderTest extends LoaderTest
     }
 
     /**
-     * Test if the routes are also working with uninflected words
+     * Test if the routes are also working with uninflected words.
      *
      * @see https://github.com/FriendsOfSymfony/FOSRestBundle/pull/761
      */
@@ -264,7 +270,7 @@ class RestRouteLoaderTest extends LoaderTest
     }
 
     /**
-     * Test if the routes are also working with uninflected words
+     * Test if the routes are also working with uninflected words.
      *
      * @see https://github.com/FriendsOfSymfony/FOSRestBundle/pull/761
      */
@@ -298,7 +304,7 @@ class RestRouteLoaderTest extends LoaderTest
      */
     public function testNameMethodPrefixIsPrependingCorrectly()
     {
-        $collection     = $this->loadFromControllerFixture('AnnotatedUsersController');
+        $collection = $this->loadFromControllerFixture('AnnotatedUsersController');
 
         $this->assertNotNull($collection->get('post_users_foo'), 'route for "post_users_foo" does not exist');
         $this->assertNotNull($collection->get('post_users_bar'), 'route for "post_users_bar" does not exist');

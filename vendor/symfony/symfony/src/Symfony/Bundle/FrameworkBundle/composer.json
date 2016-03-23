@@ -33,7 +33,6 @@
         "doctrine/annotations": "~1.0"
     },
     "require-dev": {
-        "symfony/phpunit-bridge": "~2.7",
         "symfony/browser-kit": "~2.4",
         "symfony/console": "~2.7",
         "symfony/css-selector": "~2.0,>=2.0.5",
@@ -52,12 +51,16 @@
         "symfony/console": "For using the console commands",
         "symfony/finder": "For using the translation loader and cache warmer",
         "symfony/form": "For using forms",
+        "symfony/serializer": "For using the serializer service",
         "symfony/validator": "For using validation",
         "symfony/yaml": "For using the debug:config and lint:yaml commands",
         "doctrine/cache": "For using alternative cache drivers"
     },
     "autoload": {
-        "psr-4": { "Symfony\\Bundle\\FrameworkBundle\\": "" }
+        "psr-4": { "Symfony\\Bundle\\FrameworkBundle\\": "" },
+        "exclude-from-classmap": [
+            "/Tests/"
+        ]
     },
     "minimum-stability": "dev",
     "extra": {
