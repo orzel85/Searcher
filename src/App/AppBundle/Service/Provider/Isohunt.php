@@ -22,13 +22,13 @@ class Isohunt extends Template {
         $doc->loadHTML($pageContent);
         $xpath = new \DOMXpath($doc);
         $resultsListNode = $xpath->query('//table[@class="table-torrents table table-striped table-hover"]');
-        $resultsNode = $resultsListNode[0];
+        $resultsNode = $resultsListNode->item(0);
         $resultsList = $resultsNode->getElementsByTagName('tr');
         $length = $resultsList->length - 1;
         $torrentsList = array();
         for($i = 1 ; $i < $length ; $i++) {
             $torrent = new Torrents();
-            $this->parseSinglElement($resultsList[$i], $torrent);
+            $this->parseSinglElement($resultsList->item($i), $torrent);
             $this->addToTorrentList($torrent);
         }
         return $this->torrentList;
@@ -42,12 +42,12 @@ class Isohunt extends Template {
         $tdList = $domNode->getElementsByTagName('td');
         $torrent->setName($name);
         $torrent->setLink($link);
-        $seeds = $tdList[6]->nodeValue;
+        $seeds = $tdList->item(6)->nodeValue;
         $peers = 0;
         $torrent->setPeers($peers);
         $torrent->setSeeds($seeds);
         $torrent->setProvider(Controller::ISOHUNT);
-        $this->setSize($tdList[5],  $torrent);
+        $this->setSize($tdList->item(5),  $torrent);
     }
     
     private function setSize(\DOMElement $domNode, Torrents $torrent) {

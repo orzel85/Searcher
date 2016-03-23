@@ -25,7 +25,8 @@ abstract class Template {
     
     protected function getPageContent($url, $postArray = array(), $curlFlags = array()) {
         $curlService = new Curl();
-        return $curlService->send($url, $postArray, $curlFlags);
+        $return = $curlService->send($url, $postArray, $curlFlags);
+        return $return;
     }
     
     protected function addToTorrentList($torrent) {

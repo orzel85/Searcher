@@ -28,8 +28,8 @@ class Curl {
                     curl_setopt($ch,$flag,$value);
                 }
             }
-            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT ,3);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 20);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT ,30);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 30);
             $response = curl_exec($ch);
 //            var_dump(curl_getinfo($ch));
 //            var_dump($response);

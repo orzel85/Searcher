@@ -18,13 +18,17 @@ class Torrenthound extends Template {
 
     public function getTorrentList() {
         $url = $this->createUrl();
+//var_dump($url);
         $pageContent = $this->getPageContent($url);
         $doc = new \DOMDocument();
         libxml_use_internal_errors(true);
         $doc->loadHTML($pageContent);
+//var_dump($pageContent);
         $xpath = new \DOMXpath($doc);
         $searchTableList = $xpath->query('//table[@class="searchtable"]');
-        $searchTable = $searchTableList[1];
+//var_dump($searchTableList);
+//        $searchTable = $searchTableList[1];
+$searchTable = $searchTableList->item(1);
         if(!is_object($searchTable)) {
             return null;
         }
@@ -33,7 +37,7 @@ class Torrenthound extends Template {
         $torrentsList = array();
         for($i = 1 ; $i < $length ; $i++) {
             $torrent = new Torrents();
-            $this->parseSingleTr($trList[$i], $torrent);
+            $this->parseSingleTr($trList->item($i), $torrent);
             $this->addToTorrentList($torrent);
         }
         return $this->torrentList;
@@ -41,20 +45,20 @@ class Torrenthound extends Template {
     
     private function parseSingleTr(\DOMElement $domNode, Torrents $torrent) {
         $tdList = $domNode->getElementsByTagName('td');
-        $td1 = $tdList[0];
+        $td1 = $tdList->item(0);
         $aList = $td1->getElementsByTagName('a');
-        $a = $aList[2];
+        $a = $aList->item(2);
         $name = $a->nodeValue;
         $hrefNode = $a->getAttributeNode('href');
         $href = $hrefNode->value;
-        $tdSize = $tdList[2];
-        $tdSeeds = $tdList[3];
+        $tdSize = $tdList->item(2);
+        $tdSeeds = $tdList->item(3);
         $spanSeedsList = $tdSeeds->getElementsByTagName('span');
-        $spanSeeds = $spanSeedsList[0];
+        $spanSeeds = $spanSeedsList->item(0);
         $seeds = $this->cleanSeedsLeeches($spanSeeds->nodeValue);
-        $tdLeeches = $tdList[4];
+        $tdLeeches = $tdList->item(4);
         $spanLeechesList = $tdLeeches->getElementsByTagName('span');
-        $spanLeeches = $spanLeechesList[0];
+        $spanLeeches = $spanLeechesList->item(0);
         $peers = $this->cleanSeedsLeeches($spanLeeches->nodeValue);
         $link = $this->providerUrl . $href;
         $this->setSize($tdSize, $torrent);
@@ -67,7 +71,7 @@ class Torrenthound extends Template {
     
     private function setSize(\DomElement $domNode, Torrents $torrent) {
         $spanList = $domNode->getElementsByTagName('span');
-        $span = $spanList[0];
+        $span = $spanList->item(0);
         $originalSize = $span->nodeValue;
         $sizeArray = explode(' ', $span->nodeValue);
         $sizeType = strtoupper($sizeArray[1]);

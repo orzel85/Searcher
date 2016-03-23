@@ -113,7 +113,7 @@ class GetAllTorrents {
         $return['name'] = $obj->name;
         $return['link'] = $obj->link;
         $return['linkSha1'] = $obj->linkSha1;
-        $return['provider'] = $obj->provider;
+        $return['provider'] = strtolower($obj->provider);
         $return['seeds'] = $obj->seeds;
         $return['peers'] = $obj->peers;
         $return['size'] = $obj->size;

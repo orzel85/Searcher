@@ -19,13 +19,13 @@ class Kickasstorrent extends Template {
         $doc->loadHTML($pageContent);
         $xpath = new \DOMXpath($doc);
         $resultsListNode = $xpath->query('//table[@id="mainSearchTable"]');
-        $resultsNode = $resultsListNode[0];
+        $resultsNode = $resultsListNode->item(0);
         $resultsList = $resultsNode->getElementsByTagName('tr');
         $length = $resultsList->length;
         $torrentsList = array();
         for($i = 2 ; $i < $length ; $i++) {
             $torrent = new Torrents();
-            $this->parseSinglElement($resultsList[$i], $torrent);
+            $this->parseSinglElement($resultsList->item($i), $torrent);
             $this->addToTorrentList($torrent);
         }
         return $this->torrentList;
@@ -36,15 +36,15 @@ class Kickasstorrent extends Template {
         $href = $this->getHrefAttributeFromHyperlinkNode($link);
         $name = $this->getValueFromHyperlinkNode($link);
         $tdList = $domNode->getElementsByTagName('td');
-        $seeds = $tdList[4]->nodeValue;
-        $peers = $tdList[5]->nodeValue;
+        $seeds = $tdList->item(4)->nodeValue;
+        $peers = $tdList->item(5)->nodeValue;
         $link = $this->providerUrl . $href;
         $torrent->setName($name);
         $torrent->setLink($link);
         $torrent->setPeers($peers);
         $torrent->setSeeds($seeds);
         $torrent->setProvider(Controller::KICKASSTORRENT);
-        $this->setSize($tdList[1],  $torrent);
+        $this->setSize($tdList->item(1),  $torrent);
     }
     
     private function setSize(\DOMElement $domNode, Torrents $torrent) {

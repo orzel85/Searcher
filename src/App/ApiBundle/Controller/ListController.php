@@ -15,7 +15,7 @@ class ListController extends FOSRestController implements ClassResourceInterface
 //        var_dump($request->query->all());
 //        die();
         set_time_limit(120);
-        
+        /* @var $service \App\AppBundle\Service\GetAllTorrentsExecute */
         $service = $this->get('get_all_torrents_execute');
         $service->setRequest($request->query->all());
         $list = $service->getAllTorrentsAsArray();

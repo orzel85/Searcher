@@ -19,13 +19,13 @@ class Bitsnoop extends Template {
         $doc->loadHTML($pageContent);
         $xpath = new \DOMXpath($doc);
         $resultsListNode = $xpath->query('//ol[@id="torrents"]');
-        $resultsNode = $resultsListNode[0];
+        $resultsNode = $resultsListNode->item(0);
         $resultsList = $resultsNode->getElementsByTagName('li');
         $length = $resultsList->length;
         $torrentsList = array();
         for($i = 0 ; $i < $length ; $i++) {
             $torrent = new Torrents();
-            $this->parseSinglElement($resultsList[$i], $torrent);
+            $this->parseSinglElement($resultsList->item($i), $torrent);
             $this->addToTorrentList($torrent);
         }
         return $this->torrentList;
@@ -33,7 +33,7 @@ class Bitsnoop extends Template {
     
     private function parseSinglElement(\DOMElement $domNode, Torrents $torrent) {
         $aList = $domNode->getElementsByTagName('a');
-        $link = $aList[0];
+        $link = $aList->item(0);
         $hrefNode = $link->getAttributeNode('href');
         $href = $hrefNode->value;
         $name = trim($link->nodeValue);
@@ -62,9 +62,9 @@ class Bitsnoop extends Template {
     
     private function setSize(\DOMElement $domNode, Torrents $torrent) {
         $divList = $domNode->getElementsByTagName('div');
-        $div1 = $divList[0];
+        $div1 = $divList->item(0);
         $tdList = $div1->getElementsByTagName('td');
-        $td1 = $tdList[0];
+        $td1 = $tdList->item(0);
         $value = $td1->nodeValue;
         $length = strlen($value);
         $numberString = '';

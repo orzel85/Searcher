@@ -13,20 +13,26 @@ class Torrentreactor extends Template {
 
     public function getTorrentList() {
         $url = $this->createUrl();
-        $pageContent = $this->getPageContent($url);
+        $array = array();
+        $flags = array(
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_POSTREDIR => 3,
+        );
+        $pageContent = $this->getPageContent($url, $array, $flags);
         $doc = new \DOMDocument();
         libxml_use_internal_errors(true);
         $doc->loadHTML($pageContent);
         $xpath = new \DOMXpath($doc);
         $resultsListNode = $xpath->query('//table[@class="col-sm-12"]');
-        $resultsNode = $resultsListNode[0];
+        $resultsNode = $resultsListNode->item(0);
         $trList = $resultsNode->getElementsByTagName('tr');
         $length = $trList->length;
         $torrentsList = array();
         for($i = 1 ; $i < $length ; $i++) {
-            if(!empty($trList[$i])) {
+            if(!empty($trList->item($i))) {
                 $torrent = new Torrents();
-                $this->parseSinglElement($trList[$i], $torrent);
+                $this->parseSinglElement($trList->item($i), $torrent);
                 $this->addToTorrentList($torrent);
             }
         }
@@ -35,7 +41,7 @@ class Torrentreactor extends Template {
     
     private function parseSinglElement(\DOMElement $domNode, Torrents $torrent) {
         $aList = $domNode->getElementsByTagName('a');
-        $linkNode = $aList[0];
+        $linkNode = $aList->item(0);
         if(empty($linkNode)) {
             $this->dontAddToTorrentList();
             return;
@@ -47,9 +53,9 @@ class Torrentreactor extends Template {
         }
         $name = trim($linkNode->nodeValue);
         $tdList = $domNode->getElementsByTagName('td');
-        $seeds = $tdList[4]->nodeValue;
-        $peers = $tdList[5]->nodeValue;
-        $this->setSize($tdList[3], $torrent);
+        $seeds = $tdList->item(4)->nodeValue;
+        $peers = $tdList->item(5)->nodeValue;
+        $this->setSize($tdList->item(3), $torrent);
         $link = $this->providerUrl . $href;
         $torrent->setName($name);
         $torrent->setLink($link);

@@ -6,9 +6,9 @@ use App\AppBundle\Entity\Torrents;
 
 class PirateBayOrg extends Template {
     
-    protected $searchUrl = 'https://thepiratebay.la/search/';
+    protected $searchUrl = 'https://thepiratebay.se/search/';
     
-    protected $providerUrl = 'https://thepiratebay.la';
+    protected $providerUrl = 'https://thepiratebay.se';
 
 
     public function getTorrentList() {
@@ -19,13 +19,13 @@ class PirateBayOrg extends Template {
         $doc->loadHTML($pageContent);
         $xpath = new \DOMXpath($doc);
         $resultsListNode = $xpath->query('//table[@id="searchResult"]');
-        $resultsNode = $resultsListNode[0];
+        $resultsNode = $resultsListNode->item(0);
         $trList = $resultsNode->getElementsByTagName('tr');
         $length = $trList->length;
         $torrentsList = array();
         for($i = 1 ; $i < $length ; $i++) {
             $torrent = new Torrents();
-            $this->parseSinglElement($trList[$i], $torrent);
+            $this->parseSinglElement($trList->item($i), $torrent);
             $this->addToTorrentList($torrent);
         }
         return $this->torrentList;
@@ -33,10 +33,10 @@ class PirateBayOrg extends Template {
     
     private function parseSinglElement(\DOMElement $domNode, Torrents $torrent) {
         $tdList = $domNode->getElementsByTagName('td');
-        $seeds = $tdList[2]->nodeValue;
-        $peers = $tdList[3]->nodeValue;
-        $this->setName($tdList[1], $torrent);
-        $this->setSize($tdList[1], $torrent);
+        $seeds = $tdList->item(2)->nodeValue;
+        $peers = $tdList->item(3)->nodeValue;
+        $this->setName($tdList->item(1), $torrent);
+        $this->setSize($tdList->item(1), $torrent);
         $torrent->setPeers($peers);
         $torrent->setSeeds($seeds);
         $torrent->setProvider(Controller::PIRATEBAYORG);
@@ -45,7 +45,7 @@ class PirateBayOrg extends Template {
     
     private function setName(\DOMElement $node, Torrents $torrent) {
         $aList = $node->getElementsByTagName('a');
-        $aNode = $aList[0];
+        $aNode = $aList->item(0);
         $name = $this->getValueFromHyperlinkNode($aNode);
         $link = $this->providerUrl . $this->getHrefAttributeFromHyperlinkNode($aNode);
         $torrent->setName($name);
@@ -54,7 +54,7 @@ class PirateBayOrg extends Template {
     
     private function setSize(\DOMElement $domNode, Torrents $torrent) {
         $fontList = $domNode->getElementsByTagName('font');
-        $fontNode = $fontList[0];
+        $fontNode = $fontList->item(0);
         $textArray = explode(',', $fontNode->nodeValue);
         $sizeText = trim($textArray[1]);
         $value = trim(str_replace(array('Size', 'i'), array('',''), $sizeText));

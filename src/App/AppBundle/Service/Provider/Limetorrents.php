@@ -22,13 +22,13 @@ class Limetorrents extends Template {
         $doc->loadHTML($pageContent);
         $xpath = new \DOMXpath($doc);
         $resultsListNode = $xpath->query('//table[@class="table2"]');
-        $resultsNode = $resultsListNode[1];
+        $resultsNode = $resultsListNode->item(1);
         $resultsList = $resultsNode->getElementsByTagName('tr');
         $length = $resultsList->length;
         $torrentsList = array();
         for($i = 1 ; $i < $length ; $i++) {
             $torrent = new Torrents();
-            $this->parseSinglElement($resultsList[$i], $torrent);
+            $this->parseSinglElement($resultsList->item($i), $torrent);
             $this->addToTorrentList($torrent);
         }
         return $this->torrentList;
@@ -42,12 +42,12 @@ class Limetorrents extends Template {
         $tdList = $domNode->getElementsByTagName('td');
         $torrent->setName($name);
         $torrent->setLink($link);
-        $seeds = $tdList[3]->nodeValue;
-        $peers = $tdList[4]->nodeValue;
+        $seeds = $tdList->item(3)->nodeValue;
+        $peers = $tdList->item(4)->nodeValue;
         $torrent->setPeers($peers);
         $torrent->setSeeds($seeds);
         $torrent->setProvider(Controller::LIMETORRENTS);
-        $this->setSize($tdList[2],  $torrent);
+        $this->setSize($tdList->item(2),  $torrent);
     }
     
     private function setSize(\DOMElement $domNode, Torrents $torrent) {

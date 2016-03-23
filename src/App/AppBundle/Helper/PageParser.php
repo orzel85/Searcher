@@ -34,7 +34,7 @@ class PageParser {
      */
     public static function getElementByTagAndIndex(\DOMElement $domElement, $tagName, $index) {
         $list = $domElement->getElementsByTagName($tagName);
-        return $list[$index];
+        return $list->item($index);
     }
     
 }

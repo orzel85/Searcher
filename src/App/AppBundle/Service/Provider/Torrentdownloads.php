@@ -19,13 +19,13 @@ class Torrentdownloads extends Template {
         $doc->loadHTML($pageContent);
         $xpath = new \DOMXpath($doc);
         $divInnerContainerList = $xpath->query('//div[@class="inner_container"]');
-        $divInnerContainer = $divInnerContainerList[1];
+        $divInnerContainer = $divInnerContainerList->item(1);
         $divInnerContainerChildren = $divInnerContainer->getElementsByTagName('div');
         $length = $divInnerContainerChildren->length;
         $torrentsList = array();
         for($i = 4 ; $i < $length-3 ; $i++) {
             $torrent = new Torrents();
-            $this->parseSingleDiv($divInnerContainerChildren[$i], $torrent);
+            $this->parseSingleDiv($divInnerContainerChildren->item($i), $torrent);
             $this->addToTorrentList($torrent);
         }
         return $this->torrentList;
@@ -33,7 +33,7 @@ class Torrentdownloads extends Template {
     
     private function parseSingleDiv(\DOMElement $domNode, Torrents $torrent) {
         $aList = $domNode->getElementsByTagName('a');
-        $link = $aList[0];
+        $link = $aList->item(0);
         
         $hrefNode = $link->getAttributeNode('href');
         $href = $hrefNode->value;
@@ -42,9 +42,9 @@ class Torrentdownloads extends Template {
         }
         $name = trim($link->nodeValue);
         $spanList = $domNode->getElementsByTagName('span');
-        $seedsNode = $spanList[2];
+        $seedsNode = $spanList->item(2);
         $seeds = $seedsNode->nodeValue;
-        $peersNode = $spanList[1];
+        $peersNode = $spanList->item(1);
         $peers = $peersNode->nodeValue;
         $link = $this->providerUrl . $href;
         $torrent->setName($name);
@@ -52,7 +52,7 @@ class Torrentdownloads extends Template {
         $torrent->setPeers($peers);
         $torrent->setSeeds($seeds);
         $torrent->setProvider(Controller::TORRENTDOWNLOADS);
-        $this->setSize($spanList[3], $torrent);
+        $this->setSize($spanList->item(3), $torrent);
         return true;
     }
     
