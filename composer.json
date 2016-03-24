@@ -24,7 +24,8 @@
         "jms/serializer-bundle": "^0.13.0",
         "obtao/html2pdf-bundle": "master-dev",
         "knplabs/knp-snappy-bundle": "^1.2",
-        "psliwa/pdf-bundle": "^1.0"
+        "psliwa/pdf-bundle": "^1.0",
+        "nelmio/api-doc-bundle": "^2.12"
 
     },
     "require-dev": {
@@ -65,4 +66,3 @@
         }
     }
 }
-

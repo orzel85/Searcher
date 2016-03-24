@@ -17,6 +17,8 @@ return array(
     'PhpCollection' => array($vendorDir . '/phpcollection/phpcollection/src'),
     'PHPPdf' => array($vendorDir . '/psliwa/php-pdf/lib'),
     'Obtao\\Bundle\\Html2PdfBundle' => array($vendorDir . '/obtao/html2pdf-bundle'),
+    'Nelmio\\ApiDocBundle' => array($vendorDir . '/nelmio/api-doc-bundle'),
+    'Michelf' => array($vendorDir . '/michelf/php-markdown'),
     'Metadata\\' => array($vendorDir . '/jms/metadata/src'),
     'Knp\\Snappy' => array($vendorDir . '/knplabs/knp-snappy/src'),
     'JsonpCallbackValidator' => array($vendorDir . '/willdurand/jsonp-callback-validator/src'),
