@@ -16,13 +16,13 @@ class ListController extends FOSRestController implements ClassResourceInterface
 
     /**
      * @ApiDoc(
-     *      description="List of torrents",
+     *      description="List of all torrents",
      *      section="ListController"
      * )
      * 
      * @Get("/lists")
      * 
-     * @REST\QueryParam(name="query", nullable=false)
+     * @REST\QueryParam(name="query", strict=true, nullable=false)
      * @REST\QueryParam(name="page", requirements="\d+", nullable=false)
      */
     public function cgetAction(Request $request) {

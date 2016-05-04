@@ -61,12 +61,9 @@ class TorrentsList {
     public function execute() {
         $freshCreated = false;
         if(!$this->checkIfQueryInDb()) {
-//echo 'zapis do bd';
             $this->createQueryInDb();
             $freshCreated = true;
         }
-//echo 'po sprawdzeniu czy w bd';
-//die();
         if($freshCreated) {
             $torrentsList = $this->getLinksFromExternalSystems();
         }else{
@@ -158,7 +155,6 @@ class TorrentsList {
     
     private function checkIfQueryInDb() {
         $query = $this->queryRepository->findByQuery($this->queryFromRequest, $this->page, $this->providerCode);
-//var_dump($query);
         if(empty($query)) {
             return false;
         }

@@ -1,5 +1,6 @@
 <div>
     <div id="queryDiv">
+        <div id="messages" ng-show="messageEmptyQuery">Empty phrase can't be searched</div>
         <div id="queryDivInner">
             <form name="queryForm" ng-submit="submit(queryForm)"  >
                 <input type="text" name="query" ng-model="query" id="query" ng-disabled="disabled" />
@@ -8,7 +9,7 @@
         </div>
         <div class="clear"></div>
     </div>
-    <div id="filters">
+    <div id="filters" ng-hide="hideResultsTable">
         <span id="filtersHeader">
             Filters
         </span>

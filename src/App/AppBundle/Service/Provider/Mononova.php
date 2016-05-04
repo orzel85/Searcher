@@ -23,7 +23,7 @@ class Mononova extends Template {
         libxml_use_internal_errors(true);
         $doc->loadHTML($pageContent);
         $xpath = new \DOMXpath($doc);
-        $resultsListNode = $xpath->query('//table[@class="table table-bordered main-table"]');
+        $resultsListNode = $xpath->query('//table[@class="bordered main-table"]');
         $resultsNode = $resultsListNode->item(0);
         $resultsList = $resultsNode->getElementsByTagName('tr');
         $length = $resultsList->length;
@@ -38,18 +38,18 @@ class Mononova extends Template {
     
     private function parseSinglElement(\DOMElement $domNode, Torrents $torrent) {
         $tdList = $domNode->getElementsByTagName('td');
-        $aNode = $this->getElementByTagAndIndex($tdList->item(0), 'a', 0);
+        $aNode = $this->getElementByTagAndIndex($tdList->item(1), 'a', 0);
         $href = $this->getHrefAttributeFromHyperlinkNode($aNode);
         $name = $this->getValueFromHyperlinkNode($aNode);
         $link = 'https:' . $href;
-        $seeds = $tdList->item(6)->nodeValue;
-        $peers = $tdList->item(7)->nodeValue;
+        $seeds = $tdList->item(4)->nodeValue;
+        $peers = $tdList->item(5)->nodeValue;
         $torrent->setName($name);
         $torrent->setLink($link);
         $torrent->setPeers($peers);
         $torrent->setSeeds($seeds);
         $torrent->setProvider(Controller::MONONOVA);
-        $this->setSize($tdList->item(4),  $torrent);
+        $this->setSize($tdList->item(3),  $torrent);
     }
     
     private function setSize(\DOMElement $domNode, Torrents $torrent) {

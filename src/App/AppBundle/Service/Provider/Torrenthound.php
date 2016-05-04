@@ -18,17 +18,13 @@ class Torrenthound extends Template {
 
     public function getTorrentList() {
         $url = $this->createUrl();
-//var_dump($url);
         $pageContent = $this->getPageContent($url);
         $doc = new \DOMDocument();
         libxml_use_internal_errors(true);
         $doc->loadHTML($pageContent);
-//var_dump($pageContent);
         $xpath = new \DOMXpath($doc);
         $searchTableList = $xpath->query('//table[@class="searchtable"]');
-//var_dump($searchTableList);
-//        $searchTable = $searchTableList[1];
-$searchTable = $searchTableList->item(1);
+        $searchTable = $searchTableList->item(1);
         if(!is_object($searchTable)) {
             return null;
         }
