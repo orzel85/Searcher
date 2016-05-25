@@ -30,6 +30,9 @@ class SizeParser {
     public static function explodeSizeBySpace($stringSize) {
         $sizeArray = explode(' ', $stringSize);
         $size = new Size();
+        if(!isset($sizeArray[1])) {
+            throw new \Exception('Empty sizeArray[1] ::' . __FILE__ . '::' . __LINE__);
+        }
         $size->type = $sizeArray[1];
         $size->value = $sizeArray[0];
         return $size;

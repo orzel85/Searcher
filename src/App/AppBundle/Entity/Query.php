@@ -50,6 +50,13 @@ class Query
     /**
      * @var integer
      *
+     * @ORM\Column(name="parsing_external_system_in_progress", type="integer", length=50, nullable=true)
+     */
+    private $parsingExternalSystemInProgress;
+
+    /**
+     * @var integer
+     *
      * @ORM\Column(name="page", type="integer", nullable=false)
      */
     private $page;
@@ -63,7 +70,13 @@ class Query
      */
     private $id;
 
+    function getParsingExternalSystemInProgress() {
+        return $this->parsingExternalSystemInProgress;
+    }
 
+    function setParsingExternalSystemInProgress($parsingExternalSystemInProgress) {
+        $this->parsingExternalSystemInProgress = $parsingExternalSystemInProgress;
+    }
 
     /**
      * Set value

@@ -29,6 +29,18 @@ class QueryRepository extends EntityRepository {
         return $queryObj;
     }
     
+    public function setParsingInProgressActive(Query $queryObj) {
+        $queryObj->setParsingExternalSystemInProgress(1);
+        $this->getEntityManager()->persist($queryObj);
+        $this->getEntityManager()->flush();
+    }
+    
+    public function setParsingInProgressInActive(Query $queryObj) {
+        $queryObj->setParsingExternalSystemInProgress(0);
+        $this->getEntityManager()->persist($queryObj);
+        $this->getEntityManager()->flush();
+    }
+    
     public function updateUpdateDateToCurrentDate(Query $query) {
         $query->setUpdateDate(new \DateTime(date('Y-m-d H:i:s')));
         $this->getEntityManager()->persist($query);
@@ -42,5 +54,18 @@ class QueryRepository extends EntityRepository {
         $newQuery = implode(' ', $queryArr);
         return sha1($newQuery);
     }
+    
+    public function getByIdAsArrayRawQuery($id) {
+        $em = $this->getEntityManager();
+        $connection = $em->getConnection();
+        $statement = $connection->prepare("SELECT * FROM query WHERE id = ". $id);
+        $statement->execute();
+        $result = $statement->fetchAll();
+        if(empty($result)) {
+            return null;
+        }
+        return $result[0];
+    }
+    
     
 }

@@ -38,28 +38,36 @@ myApp.controller('mainController',  function($scope, $location){
 
 myApp.controller('formController',  function($scope, $log, $http, $routeParams, $location){
     console.log("formController");
+    
     $scope.page = 1;
     $scope.list = [];
     $scope.orderField = 'seeds';
     $scope.orderReverse = true;
     $scope.query = $routeParams.queryParam;
-    $scope.disabled = true;
-    $scope.hideResultsTable = true;
-    $scope.loadingImage = true;
-    $scope.showSortArrow = 'order_' + $scope.orderField + '_' + (($scope.orderReverse) ? 'desc' : 'asc');
-    $scope.sizeFilter = 0;
-    $scope.seedsFilter = 0;
-    $scope.peersFilter = 0;
-    
-    console.log($scope.showSortArrow);
-    var link = '/api/lists.json?page='+ $scope.page +'&query=' + encodeURI($routeParams.queryParam);
-    $http.get(link).success(function(data){
-        $scope.list.push.apply($scope.list, data.collection);
-        $scope.disabled = false;
-        $scope.hideResultsTable = false;
-        $scope.loadingImage = false;
-    });
+    $scope.messageEmptyQuery = false;
+    if( ($scope.query === 'undefined') || ($scope.query === '')) {
+        $scope.query = '';
+        $scope.hideResultsTable = true;
+        $scope.messageEmptyQuery = true;
+    }else{
+        $scope.disabled = true;
+        $scope.messageEmptyQuery = false;
+        $scope.hideResultsTable = true;
+        $scope.loadingImage = true;
+        $scope.showSortArrow = 'order_' + $scope.orderField + '_' + (($scope.orderReverse) ? 'desc' : 'asc');
+        $scope.sizeFilter = 0;
+        $scope.seedsFilter = 0;
+        $scope.peersFilter = 0;
 
+        console.log($scope.showSortArrow);
+        var link = '/api/lists.json?page='+ $scope.page +'&query=' + encodeURI($routeParams.queryParam);
+        $http.get(link).success(function(data){
+            $scope.list.push.apply($scope.list, data.collection);
+            $scope.disabled = false;
+            $scope.hideResultsTable = false;
+            $scope.loadingImage = false;
+        });
+    }
     $scope.getNextPage = function() {
         $scope.page++;
         var link = '/api/lists.json?page='+ $scope.page +'&query=' + encodeURI($routeParams.queryParam);
@@ -75,14 +83,23 @@ myApp.controller('formController',  function($scope, $log, $http, $routeParams, 
     $scope.newSearch = function() {
         $scope.page = 1;
         $scope.list = [];
+        
         var link = '/api/lists.json?page='+ $scope.page +'&query=' + encodeURI($routeParams.queryParam);
+        this.loadingImage = true;
+        $scope.messageEmptyQuery = false;
         $http.get(link).success(function(data){
             $scope.list.push.apply($scope.list, data.collection);
+            $scope.loadingImage = false;
         });
     }
     
     $scope.submit = function() {
-        $location.path('/searchResults/' + $scope.query);
+        if( ($scope.query === 'undefined') || ($scope.query === '')) {
+           $scope.messageEmptyQuery = true;
+        }else{
+            $location.path('/searchResults/' + $scope.query);
+            this.newSearch();
+        }
     }
     
     $scope.order = function(fieldName) {

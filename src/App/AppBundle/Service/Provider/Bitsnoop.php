@@ -13,7 +13,10 @@ class Bitsnoop extends Template {
 
     public function getTorrentList() {
         $url = $this->createUrl();
-        $pageContent = $this->getPageContent($url);
+        $curlFlags = array(
+            CURLOPT_FOLLOWLOCATION => true,
+        );
+        $pageContent = $this->getPageContent($url, array(),$curlFlags);
         $doc = new \DOMDocument();
         libxml_use_internal_errors(true);
         $doc->loadHTML($pageContent);

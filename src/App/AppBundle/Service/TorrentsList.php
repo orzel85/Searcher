@@ -60,8 +60,8 @@ class TorrentsList {
     
     public function execute() {
         $freshCreated = false;
-        if(!$this->checkIfQueryInDb()) {
-            $this->createQueryInDb();
+        if(!$this->checkIfQueryInDb()) { // setting $this->queryDbObject if query exists in db
+            $this->createQueryInDb(); // setting $this->queryDbObject
             $freshCreated = true;
         }
         if($freshCreated) {
@@ -93,17 +93,29 @@ class TorrentsList {
         $this->queryRepository->updateUpdateDateToCurrentDate($this->queryDbObject);
     }
     
+    /**
+     * 
+     * @return \App\AppBundle\Entity\Query
+     */
     private function createQueryInDb() {
         $query = $this->queryRepository->create($this->queryFromRequest, $this->providerCode, $this->page);
         $this->queryDbObject = $query;
+        return $query;
     }
     
     private function getLinksFromDb() {
+        $this->waitUntillParsingEnded();
         $queryTorrentsList = $this->queryTorrentsRepository->getTorrentsByQuery($this->queryDbObject, $this->providerCode, $this->page);
         $torrentsLinksSha1Array = $this->getLinksSha1Array($queryTorrentsList);
         $torrentsList = $this->torrentsRepository->getTorrentsByLinkSha1($torrentsLinksSha1Array);
         $sortedTorrentsList = $this->getSortedTorrentsByArray($torrentsList, $torrentsLinksSha1Array);
         return $sortedTorrentsList;
+    }
+    
+    private function waitUntillParsingEnded() {
+        while($this->queryRepository->getByIdAsArrayRawQuery($this->queryDbObject->getId())['parsing_external_system_in_progress'] == "1") {
+            sleep(1);
+        }
     }
     
     private function getSortedTorrentsByArray($torrentsListToSort, $arrayWithKeysToSort) {
@@ -123,6 +135,7 @@ class TorrentsList {
     }
     
     private function getLinksFromExternalSystems() {
+        $this->queryRepository->setParsingInProgressActive($this->queryDbObject);
         $this->torrentController->setProviderCode($this->providerCode);
         $provider = $this->torrentController->getProvider();
         $provider->setPage($this->page);
@@ -130,6 +143,7 @@ class TorrentsList {
         $list = $provider->getTorrentList();
         $this->updateListOfLinksInDb($list);
         $this->updateUpdateDateQueryObj();
+        $this->queryRepository->setParsingInProgressInActive($this->queryDbObject);
         return $list;
     }
     

@@ -12,6 +12,7 @@ class Mononova extends Template {
 
     public function getTorrentList() {
         $url = $this->createUrl();
+        var_dump($url);
         $flags = array(
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_FOLLOWLOCATION => true,
@@ -54,6 +55,11 @@ class Mononova extends Template {
     
     private function setSize(\DOMElement $domNode, Torrents $torrent) {
         $sizeOriginal = $domNode->nodeValue;
+        if($sizeOriginal == 'N/A') {
+            $torrent->setSizeOriginal(0);
+            $torrent->setSize(0);
+            return;
+        }
         $size = $this->explodeSizeBySpace($sizeOriginal);
         $sizeToDb = $this->parseSize($size->value, $size->type);
         $torrent->setSizeOriginal($sizeOriginal);
