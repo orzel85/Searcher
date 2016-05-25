@@ -74,7 +74,6 @@ class TorrentsList {
                 
             }
         }
-//        $torrentsList = $this->getLinksFromExternalSystems();
         $torrentsList = SeedsFilter::getLimitedBySeeds($torrentsList, 1);
         $this->torrentsList = $torrentsList;
     }
@@ -140,11 +139,19 @@ class TorrentsList {
         $provider = $this->torrentController->getProvider();
         $provider->setPage($this->page);
         $provider->setQuery($this->queryDbObject->getValue());
-        $list = $provider->getTorrentList();
+        try{
+            $list = $provider->getTorrentList();
+        }catch(\Exception $e) {
+            $this->errorWhileParsingExternalSystem();
+        }
         $this->updateListOfLinksInDb($list);
         $this->updateUpdateDateQueryObj();
         $this->queryRepository->setParsingInProgressInActive($this->queryDbObject);
         return $list;
+    }
+    
+    private function errorWhileParsingExternalSystem() {
+        $this->queryRepository->setParsingInProgressInActive($this->queryDbObject);
     }
     
     private function updateListOfLinksInDb($newTorrentsList) {

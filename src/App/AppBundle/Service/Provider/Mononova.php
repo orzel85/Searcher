@@ -12,7 +12,6 @@ class Mononova extends Template {
 
     public function getTorrentList() {
         $url = $this->createUrl();
-        var_dump($url);
         $flags = array(
             CURLOPT_CUSTOMREQUEST => "POST",
             CURLOPT_FOLLOWLOCATION => true,

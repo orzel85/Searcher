@@ -26,6 +26,9 @@ abstract class Template {
     protected function getPageContent($url, $postArray = array(), $curlFlags = array()) {
         $curlService = new Curl();
         $return = $curlService->send($url, $postArray, $curlFlags);
+        if(empty($return)) {
+            throw new \Exception('Empty response for url='.$url, 1);
+        }
         return $return;
     }
     

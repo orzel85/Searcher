@@ -67,5 +67,8 @@ class QueryRepository extends EntityRepository {
         return $result[0];
     }
     
+    public function save($obj) {
+        $this->em->
+    }
     
 }
