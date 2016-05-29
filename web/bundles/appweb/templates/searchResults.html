@@ -1,0 +1,166 @@
+<div>
+    <div id="queryDiv">
+        <div id="messages" ng-show="messageEmptyQuery">Empty phrase can't be searched</div>
+        <div id="queryDivInner">
+            <form name="queryForm" ng-submit="submit(queryForm)"  >
+                <input type="text" name="query" ng-model="query" id="query" ng-disabled="disabled" />
+                <input type="submit" id="searchButton" ng-disabled="disabled" value="Search" />
+            </form>
+        </div>
+        <div class="clear"></div>
+    </div>
+    <div id="filters" ng-hide="hideResultsTable">
+        <span id="filtersHeader">
+            Filters
+        </span>
+        <table>
+            <tr>
+                <td class="font12px">
+                    Name
+                </td>
+                <td colspan="2">
+                    <input type="text" id="nameFilter" ng-model="nameFilter" />
+                </td>
+            </tr>
+            <tr>
+                <td class="font12px">
+                    Size
+                </td>
+                <td>
+                    more than <input type="text" id="sizeFilter" ng-model="sizeFilter" />&nbsp;MB
+                </td>
+                <td>
+                    <button class="button" ng-click="sizeFilter = 0">0 MB</button>
+                    <button class="button" ng-click="sizeFilter = 10">10 MB</button>
+                    <button class="button" ng-click="sizeFilter = 50">50 MB</button>
+                    <button class="button" ng-click="sizeFilter = 100">100 MB</button>
+                    <button class="button" ng-click="sizeFilter = 500">500 MB</button>
+                    <button class="button" ng-click="sizeFilter = 1000">1 GB</button>
+                    <button class="button" ng-click="sizeFilter = 2000">2 GB</button>
+                    <button class="button" ng-click="sizeFilter = 5000">5 GB</button>
+                    <button class="button" ng-click="sizeFilter = 10000">10 GB</button>
+                    <button class="button" ng-click="sizeFilter = 20000">20 GB</button>
+                    <button class="button" ng-click="sizeFilter = 50000">50 GB</button>
+                </td>
+            </tr>
+            <tr>
+                <td class="font12px">
+                    Seeds
+                </td>
+                <td>
+                    more than <input type="text" id="seedsFilter" ng-model="seedsFilter" />
+                </td>
+                <td>
+                    <button class="button" ng-click="seedsFilter = 0">0</button>
+                    <button class="button" ng-click="seedsFilter = 10">10</button>
+                    <button class="button" ng-click="seedsFilter = 50">50</button>
+                    <button class="button" ng-click="seedsFilter = 100">100</button>
+                    <button class="button" ng-click="seedsFilter = 200">200</button>
+                    <button class="button" ng-click="seedsFilter = 500">500</button>
+                    <button class="button" ng-click="seedsFilter = 1000">1000</button>
+                    <button class="button" ng-click="seedsFilter = 2000">2000</button>
+                    <button class="button" ng-click="seedsFilter = 3000">3000</button>
+                    <button class="button" ng-click="seedsFilter = 5000">5000</button>
+                    <button class="button" ng-click="seedsFilter = 10000">10000</button>
+                    <button class="button" ng-click="seedsFilter = 15000">15000</button>
+                    <button class="button" ng-click="seedsFilter = 20000">20000</button>
+                </td>
+            </tr>
+            <tr>
+                <td class="font12px">
+                    Peers
+                </td>
+                <td>
+                    more than <input type="text" id="peersFilter" ng-model="peersFilter" />
+                </td>
+                <td>
+                    <button class="button" ng-click="peersFilter = 0">0</button>
+                    <button class="button" ng-click="peersFilter = 10">10</button>
+                    <button class="button" ng-click="peersFilter = 50">50</button>
+                    <button class="button" ng-click="peersFilter = 100">100</button>
+                    <button class="button" ng-click="peersFilter = 200">200</button>
+                    <button class="button" ng-click="peersFilter = 500">500</button>
+                    <button class="button" ng-click="peersFilter = 1000">1000</button>
+                    <button class="button" ng-click="peersFilter = 2000">2000</button>
+                    <button class="button" ng-click="peersFilter = 3000">3000</button>
+                    <button class="button" ng-click="peersFilter = 5000">5000</button>
+                    <button class="button" ng-click="peersFilter = 10000">10000</button>
+                    <button class="button" ng-click="peersFilter = 15000">15000</button>
+                    <button class="button" ng-click="peersFilter = 20000">20000</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <table id="searchResults" ng-hide="hideResultsTable">
+        <thead>
+            <tr id="headerSearchResults">
+                <th id="torrentLogoHeader" ng-click="order('provider')">
+
+                </th>
+                <th id="torrentNameHeader" ng-click="order('name')">
+                    <span>
+                        Name
+                    </span>
+                    <span ng-show=" showSortArrow === 'order_name_asc' ">
+                        &#8593;
+                    </span>
+                    <span ng-show=" showSortArrow === 'order_name_desc' ">
+                        &#8595;
+                    </span>
+                </th>
+                <th id="torrentSizeHeader" ng-click="order('size')">
+                    <span>
+                        Size
+                    </span>
+                    <span ng-show=" showSortArrow === 'order_size_asc' ">
+                        &#8593;
+                    </span>
+                    <span ng-show=" showSortArrow === 'order_size_desc' ">
+                        &#8595;
+                    </span>
+                </th>
+                <th id="torrentSeedsHeader" ng-click="order('seeds')">
+                    <span>
+                        Seeds
+                    </span>
+                    <span ng-show=" showSortArrow === 'order_seeds_asc' ">
+                        &#8593;
+                    </span>
+                    <span ng-show=" showSortArrow === 'order_seeds_desc' ">
+                        &#8595;
+                    </span>
+                </th>
+                <th id="torrentPeersHeader" ng-click="order('peers')">
+                    <span>
+                        Peers
+                    </span>
+                    <span ng-show=" showSortArrow === 'order_peers_asc' ">
+                        &#8593;
+                    </span>
+                    <span ng-show=" showSortArrow === 'order_peers_desc' ">
+                        &#8595;
+                    </span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="torrent in list | filter: nameFilter | filter: filterSize | filter: filterSeeds | filter: filterPeers | orderBy : orderField : orderReverse">
+                <td class="torrentLogo">
+                    <img src="/bundles/appweb/images/provider/{{torrent.provider}}.gif" />
+                </td>
+                <td class="torrentName"><a href="{{torrent.link}}" target="_blank" >{{torrent.name}}</a></td>
+                <td class="torrentSize">{{torrent.size}} MB</td>
+                <td class="torrentSeeds">{{torrent.seeds}}</td>
+                <td class="torrentPeers">{{torrent.peers}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div id="loadingScreen" ng-show="loadingImage" >
+        <img id="ajaxLoaderImage" src="/bundles/appweb/images/ajax-loader.gif" /><br /><br />
+        <span id="info">Loading results...</span>
+    </div>
+    <div id="getMore">
+        <button id="getMoreButton" ng-click="getNextPage()" ng-disabled="disabled" ng-hide="hideResultsTable">Get more</button>
+    </div>
+    <div id="bottomSearch"></div>
+</div>

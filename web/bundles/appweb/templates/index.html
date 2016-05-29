@@ -1,0 +1,12 @@
+<div>
+    <div id="queryDiv">
+    <div id="messages" ng-show="messageEmptyQuery">Empty phrase can't be searched</div>
+        <div id="queryDivInner">
+            <form name="queryForm" ng-submit="submit(queryForm)"  >
+                <input type="text" name="query" ng-model="query" id="query" />
+                <input type="submit" id="searchButton" value="Search" />
+            </form>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
