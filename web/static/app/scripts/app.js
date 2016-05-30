@@ -28,8 +28,6 @@ myApp.config(function($routeProvider){
 });
 
 myApp.controller('mainController',  function($scope, $location){
-    console.log("mainController");
-    
     $scope.submit = function() {
         $location.path('/searchResults/' + $scope.query);
     }
@@ -37,8 +35,6 @@ myApp.controller('mainController',  function($scope, $location){
 });
 
 myApp.controller('formController',  function($scope, $log, $http, $routeParams, $location){
-    console.log("formController");
-    
     $scope.page = 1;
     $scope.list = [];
     $scope.orderField = 'seeds';
@@ -48,7 +44,7 @@ myApp.controller('formController',  function($scope, $log, $http, $routeParams, 
     $scope.providerCounter = 0;
     $scope.totalProviderCount = 0;
     $scope.searchingInProgress = true;
-    $scope.searchingCompleted = true;
+    $scope.searchingCompletedHide = true;
     if( ($scope.query === 'undefined') || ($scope.query === '')) {
         $scope.query = '';
         $scope.hideResultsTable = true;
@@ -67,6 +63,7 @@ myApp.controller('formController',  function($scope, $log, $http, $routeParams, 
         $http.get(link).success(function(data){
             $scope.searchingInProgress = false;
             $scope.totalProviderCount = data.length;
+            $scope.providerCounter = 0;
             for(var i = 0; i < data.length; i++) {
                 $scope.searchSingleProvider(data[i]);
             }
@@ -82,16 +79,24 @@ myApp.controller('formController',  function($scope, $log, $http, $routeParams, 
                     $scope.loadingImage = false;
                     if($scope.providerCounter === $scope.totalProviderCount) {
                         $scope.disabled = false;
-                        $scope.searchingCompleted = false;
+                        $scope.searchingCompletedHide = false;
                         $scope.searchingInProgress = true;
+                    }
+                    else{
+                        $scope.searchingCompletedHide = true;
+                        
                     }
                 })
                 .error(function(data){
                     $scope.providerCounter++;
                     if($scope.providerCounter === $scope.totalProviderCount) {
                         $scope.disabled = false;
-                        $scope.searchingCompleted = false;
+                        $scope.searchingCompletedHide = false;
                         $scope.searchingInProgress = true;
+                    }
+                    else{
+                        $scope.searchingCompletedHide = false;
+                        
                     }
                 })
         ;
@@ -102,25 +107,34 @@ myApp.controller('formController',  function($scope, $log, $http, $routeParams, 
         var link = '/api/lists.json?page='+ $scope.page +'&query=' + encodeURI($routeParams.queryParam);
         $scope.disabled = true;
         $scope.loadingImage = true;
+        $scope.searchingCompletedHide = true;
         $http.get(link).success(function(data){
-            $scope.list.push.apply($scope.list, data.collection);
-            $scope.disabled = false;
-            $scope.loadingImage = false;
+            $scope.searchingInProgress = false;
+            $scope.totalProviderCount = data.length;
+            alert($scope.totalProviderCount);
+            $scope.providerCounter = 0;
+            for(var i = 0; i < data.length; i++) {
+                $scope.searchSingleProvider(data[i]);
+            }
         });
     }
     
     $scope.newSearch = function() {
         $scope.page = 1;
         $scope.list = [];
-        
+    
         var link = '/api/lists.json?page='+ $scope.page +'&query=' + encodeURI($routeParams.queryParam);
         this.loadingImage = true;
         $scope.messageEmptyQuery = false;
         $http.get(link).success(function(data){
-            $scope.list.push.apply($scope.list, data.collection);
-            $scope.loadingImage = false;
+            $scope.searchingInProgress = false;
+            $scope.totalProviderCount = data.length;
+            $scope.providerCounter = 0;
+            for(var i = 0; i < data.length; i++) {
+                $scope.searchSingleProvider(data[i]);
+            }
         });
-    }
+    };
     
     $scope.submit = function() {
         if( ($scope.query === 'undefined') || ($scope.query === '')) {

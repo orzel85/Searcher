@@ -22,13 +22,23 @@ class PirateBayOrg extends Template {
         $doc->loadHTML($pageContent);
         $xpath = new \DOMXpath($doc);
         $resultsListNode = $xpath->query('//table[@id="searchResult"]');
+        if(empty($resultsListNode)) {
+            throw new \Exception('Empty. ' . __FILE__ . '::' . __LINE__, 1);
+        }
         $resultsNode = $resultsListNode->item(0);
+        if(empty($resultsNode)) {
+            throw new \Exception('Empty. ' . __FILE__ . '::' . __LINE__, 1);
+        }
         $trList = $resultsNode->getElementsByTagName('tr');
         $length = $trList->length;
         $torrentsList = array();
         for($i = 1 ; $i < $length ; $i++) {
             $torrent = new Torrents();
-            $this->parseSinglElement($trList->item($i), $torrent);
+            $el = $trList->item($i);
+            if(empty($el)) {
+                continue;
+            }
+            $this->parseSinglElement($el, $torrent);
             $this->addToTorrentList($torrent);
         }
         return $this->torrentList;
