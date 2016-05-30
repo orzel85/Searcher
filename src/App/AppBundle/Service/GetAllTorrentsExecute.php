@@ -44,7 +44,7 @@ class GetAllTorrentsExecute {
     
 
     public function getAllTorrentsAsArray() {
-        $this->getAllTorrentsService->execute();
+        return $this->getAllTorrentsService->execute();
         return $this->getAllTorrentsService->getTorrentsAsArray();
     }
     

@@ -10,6 +10,14 @@
         <div class="clear"></div>
     </div>
     <div id="filters" ng-hide="hideResultsTable">
+        <div id="searchingInProgress" ng-hide="searchingInProgress">
+            Searching in progress...<br />
+            Searched: {{providerCounter}}/{{totalProviderCount}}
+        </div>
+        <div id="searchingCompleted" ng-hide="searchingCompleted">
+            Searching completed! Searched: {{providerCounter}}/{{totalProviderCount}}
+        </div>
+        <br /><br />
         <span id="filtersHeader">
             Filters
         </span>
@@ -146,7 +154,7 @@
         <tbody>
             <tr ng-repeat="torrent in list | filter: nameFilter | filter: filterSize | filter: filterSeeds | filter: filterPeers | orderBy : orderField : orderReverse">
                 <td class="torrentLogo">
-                    <img src="/bundles/appweb/images/provider/{{torrent.provider}}.gif" />
+                    <img src="/bundles/appweb/images/provider/{{torrent.provider | lowercase}}.gif" />
                 </td>
                 <td class="torrentName"><a href="{{torrent.link}}" target="_blank" >{{torrent.name}}</a></td>
                 <td class="torrentSize">{{torrent.size}} MB</td>

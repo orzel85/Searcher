@@ -36,6 +36,7 @@ class GetAllTorrents {
     
     public function execute() {
         $linksArray = $this->createLinks();
+        return $linksArray;
         $curl = new Curl();
         $result = $curl->curlMultiSend($linksArray);
         $this->torrentsList = $this->convertResultToArray($result);
@@ -59,34 +60,34 @@ class GetAllTorrents {
         $linkParametersBuilder->setQuery($this->query);
         
         $linkParametersBuilder->setProvider(ProviderController::TORRENTHOUND);
-        $links[] = 'http://torrent.localhost/api/torrents.json?' . $linkParametersBuilder->getParamsAsString();
+        $links[] = '/api/torrents.json?' . $linkParametersBuilder->getParamsAsString();
         
         $linkParametersBuilder->setProvider(ProviderController::TORRENTDOWNLOADS);
-        $links[] = 'http://torrent.localhost/api/torrents.json?' . $linkParametersBuilder->getParamsAsString();
+        $links[] = '/api/torrents.json?' . $linkParametersBuilder->getParamsAsString();
         
         $linkParametersBuilder->setProvider(ProviderController::BITSNOOP);
-        $links[] = 'http://torrent.localhost/api/torrents.json?' . $linkParametersBuilder->getParamsAsString();
+        $links[] = '/api/torrents.json?' . $linkParametersBuilder->getParamsAsString();
         
         $linkParametersBuilder->setProvider(ProviderController::PIRATEBAYORG);
-        $links[] = 'http://torrent.localhost/api/torrents.json?' . $linkParametersBuilder->getParamsAsString();
+        $links[] = '/api/torrents.json?' . $linkParametersBuilder->getParamsAsString();
         
         $linkParametersBuilder->setProvider(ProviderController::TORRENTREACTOR);
-        $links[] = 'http://torrent.localhost/api/torrents.json?' . $linkParametersBuilder->getParamsAsString();
+        $links[] = '/api/torrents.json?' . $linkParametersBuilder->getParamsAsString();
         
         $linkParametersBuilder->setProvider(ProviderController::EXTRATORRENT);
-        $links[] = 'http://torrent.localhost/api/torrents.json?' . $linkParametersBuilder->getParamsAsString();
+        $links[] = '/api/torrents.json?' . $linkParametersBuilder->getParamsAsString();
         
         $linkParametersBuilder->setProvider(ProviderController::KICKASSTORRENT);
-        $links[] = 'http://torrent.localhost/api/torrents.json?' . $linkParametersBuilder->getParamsAsString();
+        $links[] = '/api/torrents.json?' . $linkParametersBuilder->getParamsAsString();
         
         $linkParametersBuilder->setProvider(ProviderController::MONONOVA);
-        $links[] = 'http://torrent.localhost/api/torrents.json?' . $linkParametersBuilder->getParamsAsString();
+        $links[] = '/api/torrents.json?' . $linkParametersBuilder->getParamsAsString();
         
         $linkParametersBuilder->setProvider(ProviderController::LIMETORRENTS);
-        $links[] = 'http://torrent.localhost/api/torrents.json?' . $linkParametersBuilder->getParamsAsString();
+        $links[] = '/api/torrents.json?' . $linkParametersBuilder->getParamsAsString();
         
         $linkParametersBuilder->setProvider(ProviderController::ISOHUNT);
-        $links[] = 'http://torrent.localhost/api/torrents.json?' . $linkParametersBuilder->getParamsAsString();
+        $links[] = '/api/torrents.json?' . $linkParametersBuilder->getParamsAsString();
         return $links;
         
     }
