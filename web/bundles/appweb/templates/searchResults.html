@@ -2,10 +2,11 @@
     <div id="queryDiv">
         <div id="messages" ng-show="messageEmptyQuery">Empty phrase can't be searched</div>
         <div id="queryDivInner">
-            <form name="queryForm" ng-submit="submit(queryForm)"  >
-                <input type="text" name="query" ng-model="query" id="query" ng-disabled="disabled" />
+            <form name="queryForm" id="queryForm" ng-submit="submit(queryForm)"  >
+                <input type="text" name="query" ng-keyup="checkQueryForNextEpisode()" ng-model="query" id="query" ng-disabled="disabled" />
                 <input type="submit" id="searchButton" ng-disabled="disabled" value="Search" />
             </form>
+            <button class="button" ng-hide="hideSearchNextEpisodeButton" ng-click="searchNextEpisode()"  ng-disabled="disabled">Search next episode ({{searchNextEpisodeQuery}})</button>
         </div>
         <div class="clear"></div>
     </div>
@@ -23,11 +24,21 @@
         </span>
         <table>
             <tr>
-                <td class="font12px">
-                    Name
-                </td>
-                <td colspan="2">
-                    <input type="text" id="nameFilter" ng-model="nameFilter" />
+                <td colspan="3">
+                    <table>
+                        <tr>
+                            <td class="font12px">
+                                Name
+                            </td>
+                            <td>
+                                <input type="text" id="nameFilter" ng-model="nameFilter" />
+                            </td>
+                            <td>
+                                <button class="button" ng-click="nameFilter = ''">[empty]</button>
+                                <button class="button" ng-repeat="nameElement in nameFilterArray" ng-click="assignNameFilter(nameElement)">{{nameElement}}</button>
+                            </td>
+                        </tr>
+                    </table>
                 </td>
             </tr>
             <tr>

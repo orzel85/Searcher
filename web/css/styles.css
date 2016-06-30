@@ -298,7 +298,7 @@ input[type="submit"]:hover {
 }
 
 #filters #nameFilter {
-    width: 500px;
+    width: 350px;
 }
 
 #filters #sizeFilter {
@@ -336,6 +336,24 @@ input[type="submit"]:hover {
     font-size: 12px;
     float: left;
     margin-left: 5px;
+}
+
+#queryDivInner .button {
+    
+    display: block;
+    padding:10px 25px;
+    color: white;
+    background-color: #336699;
+    text-decoration: none;
+    font-size: 12px;
+    float: left;
+    margin-top: 10px;
+    margin-left: 0px;
+}
+
+#queryDivInner .button:disabled {
+    background-color: #f8f8f8;
+    color: #75759c;
 }
 
 #filters input[type="text"] {

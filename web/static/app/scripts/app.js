@@ -28,6 +28,7 @@ myApp.config(function($routeProvider){
 });
 
 myApp.controller('mainController',  function($scope, $location){
+    document.getElementsByTagName("title")[0].innerHTML = "Searcher";
     $scope.submit = function() {
         $location.path('/searchResults/' + $scope.query);
     }
@@ -45,6 +46,11 @@ myApp.controller('formController',  function($scope, $log, $http, $routeParams, 
     $scope.totalProviderCount = 0;
     $scope.searchingInProgress = true;
     $scope.searchingCompletedHide = true;
+    $scope.searchingProgressPercent = true;
+    $scope.nameFilterArray = [];
+    $scope.nameFilterArray = $scope.query.split(" ");
+    $scope.searchNextEpisodeQuery = '';
+    $scope.hideSearchNextEpisodeButton = true;
     if( ($scope.query === 'undefined') || ($scope.query === '')) {
         $scope.query = '';
         $scope.hideResultsTable = true;
@@ -60,14 +66,17 @@ myApp.controller('formController',  function($scope, $log, $http, $routeParams, 
         $scope.peersFilter = 0;
 
         var link = '/api/lists.json?page='+ $scope.page +'&query=' + encodeURI($routeParams.queryParam);
+        document.getElementsByTagName("title")[0].innerHTML = "Searcher";
         $http.get(link).success(function(data){
             $scope.searchingInProgress = false;
             $scope.totalProviderCount = data.length;
             $scope.providerCounter = 0;
+            $scope.checkQueryForNextEpisode();
             for(var i = 0; i < data.length; i++) {
                 $scope.searchSingleProvider(data[i]);
             }
         });
+        
     }
     
     $scope.searchSingleProvider = function(link) {
@@ -77,6 +86,7 @@ myApp.controller('formController',  function($scope, $log, $http, $routeParams, 
                     $scope.providerCounter++;
                     $scope.hideResultsTable = false;
                     $scope.loadingImage = false;
+                    $scope.setSearchPercentInTitle();
                     if($scope.providerCounter === $scope.totalProviderCount) {
                         $scope.disabled = false;
                         $scope.searchingCompletedHide = false;
@@ -89,18 +99,24 @@ myApp.controller('formController',  function($scope, $log, $http, $routeParams, 
                 })
                 .error(function(data){
                     $scope.providerCounter++;
+                    $scope.setSearchPercentInTitle();
                     if($scope.providerCounter === $scope.totalProviderCount) {
                         $scope.disabled = false;
                         $scope.searchingCompletedHide = false;
                         $scope.searchingInProgress = true;
                     }
                     else{
-                        $scope.searchingCompletedHide = false;
+                        $scope.searchingCompletedHide = true;
                         
                     }
                 })
         ;
     };
+    
+    $scope.setSearchPercentInTitle = function() {
+        $scope.searchingProgressPercent = ($scope.providerCounter / $scope.totalProviderCount) * 100;
+        document.getElementsByTagName("title")[0].innerHTML = "Searcher " + $scope.searchingProgressPercent + " %";
+    }
     
     $scope.getNextPage = function() {
         $scope.page++;
@@ -108,6 +124,7 @@ myApp.controller('formController',  function($scope, $log, $http, $routeParams, 
         $scope.disabled = true;
         $scope.loadingImage = true;
         $scope.searchingCompletedHide = true;
+        document.getElementsByTagName("title")[0].innerHTML = "Searcher";
         $http.get(link).success(function(data){
             $scope.searchingInProgress = false;
             $scope.totalProviderCount = data.length;
@@ -122,6 +139,7 @@ myApp.controller('formController',  function($scope, $log, $http, $routeParams, 
     $scope.newSearch = function() {
         $scope.page = 1;
         $scope.list = [];
+        document.getElementsByTagName("title")[0].innerHTML = "Searcher";
     
         var link = '/api/lists.json?page='+ $scope.page +'&query=' + encodeURI($routeParams.queryParam);
         this.loadingImage = true;
@@ -134,6 +152,7 @@ myApp.controller('formController',  function($scope, $log, $http, $routeParams, 
                 $scope.searchSingleProvider(data[i]);
             }
         });
+        this.checkQueryForNextEpisode();
     };
     
     $scope.submit = function() {
@@ -141,6 +160,7 @@ myApp.controller('formController',  function($scope, $log, $http, $routeParams, 
            $scope.messageEmptyQuery = true;
         }else{
             $location.path('/searchResults/' + $scope.query);
+            document.getElementsByTagName("title")[0].innerHTML = "Searcher";
             this.newSearch();
         }
     }
@@ -153,6 +173,10 @@ myApp.controller('formController',  function($scope, $log, $http, $routeParams, 
         console.log($scope.showSortArrow);
     }
     
+    $scope.assignNameFilter = function(arg) {
+        $scope.nameFilter = arg;
+    }
+    
     $scope.filterSeeds = function(item){
         return item.seeds >= $scope.seedsFilter ;
     }
@@ -163,6 +187,44 @@ myApp.controller('formController',  function($scope, $log, $http, $routeParams, 
     
     $scope.filterSize = function(item){
         return item.size >= $scope.sizeFilter ;
+    }
+    
+    $scope.checkQueryForNextEpisode = function() {
+        var re = new RegExp("^s[0-9]+e[0-9]+$");
+        var queryArray = $scope.query.split(' ');
+        var newQueryArray = [];
+        var showSearchNextEpisode = false;
+        for(var i = 0; i < queryArray.length; i++) {
+            var singleQueryElement = queryArray[i];
+            if (re.test(singleQueryElement)) {
+                var seasonEpisodeArray = singleQueryElement.split('e');
+                var seasonNumber = seasonEpisodeArray[0].replace('s','');
+                var episodeNumber = seasonEpisodeArray[1];
+                episodeNumber++;
+                if(episodeNumber<10) {
+                    episodeNumber = '0' + episodeNumber;
+                }
+                var newSeasonEpisodeString = 's' + seasonNumber + 'e' + episodeNumber;
+                newQueryArray.push(newSeasonEpisodeString);
+                showSearchNextEpisode = true;
+            }else{
+                newQueryArray.push(singleQueryElement);
+            }
+
+        }
+        var searchNextEpisodeString = newQueryArray.join(' ');
+        if(showSearchNextEpisode) {
+            this.hideSearchNextEpisodeButton = false;
+            this.searchNextEpisodeQuery = searchNextEpisodeString;
+        }else{
+            this.hideSearchNextEpisodeButton = true;
+        }
+    }
+    
+    $scope.searchNextEpisode = function() {
+        this.query = this.searchNextEpisodeQuery;
+        $routeParams.queryParam = encodeURI(this.query);
+        $location.path('/searchResults/' + $scope.query);
     }
     
 });
