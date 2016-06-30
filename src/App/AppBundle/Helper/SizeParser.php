@@ -17,7 +17,17 @@ class SizeParser {
         $size = new Size();
         $length = strlen($stringSize);
         $size->value = (float)substr($stringSize, 0, $length-5);
-        $size->type = $stringSize[$length-2] . $stringSize[$length-1];
+        if(isset($stringSize[$length-2])) {
+            $sizeType1 = $stringSize[$length-2];
+        }else{
+            $sizeType1 = 'M';
+        }
+        if(isset($stringSize[$length-1])) {
+            $sizeType2 = $stringSize[$length-1];
+        }else{
+            $sizeType2 = 'B';
+        }
+        $size->type = $sizeType1 . $sizeType2;
         return $size;
     }
     
@@ -30,8 +40,8 @@ class SizeParser {
     public static function explodeSizeBySpace($stringSize) {
         $sizeArray = explode(' ', $stringSize);
         $size = new Size();
-        if(!isset($sizeArray[1])) {
-            throw new \Exception('Empty sizeArray[1] ::' . __FILE__ . '::' . __LINE__);
+        if( (!isset($sizeArray[1])) || (!isset($sizeArray[0])) ) {
+            return $size;
         }
         $size->type = $sizeArray[1];
         $size->value = $sizeArray[0];

@@ -14,6 +14,9 @@ class PageParser {
      */
     public static function getFirstElementByTagAndAttribute(\DOMElement $domElement, $tagName, $attributeName, $attributeValue) {
         $list = $domElement->getElementsByTagName($tagName);
+        if(empty($list)) {
+            return null;
+        }
         foreach($list as $element) {
              if($element->hasAttribute($attributeName)) {
                 $attribute = $element->getAttributeNode($attributeName);
@@ -22,6 +25,7 @@ class PageParser {
                 }
              }
         }
+        return null;
     }
     
     /**
@@ -34,7 +38,14 @@ class PageParser {
      */
     public static function getElementByTagAndIndex(\DOMElement $domElement, $tagName, $index) {
         $list = $domElement->getElementsByTagName($tagName);
-        return $list->item($index);
+        if(empty($list)) {
+            return null;
+        }
+        $element = $list->item($index);
+        if(empty($element)) {
+            return null;
+        }
+        return $element;
     }
     
 }

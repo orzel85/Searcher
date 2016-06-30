@@ -6,6 +6,7 @@ use App\AppBundle\Service\Curl;
 use App\AppBundle\Helper\NumberParser;
 use App\AppBundle\Helper\SizeParser;
 use App\AppBundle\Helper\PageParser;
+use App\AppBundle\Entity\Torrents;
 
 abstract class Template {
     
@@ -60,6 +61,9 @@ abstract class Template {
      */
     protected function getHrefAttributeFromHyperlinkNode(\DOMElement $aNode) {
         $hrefNode = $aNode->getAttributeNode('href');
+        if(empty($hrefNode)) {
+            return null;
+        }
         return $hrefNode->value;
     }
     
@@ -105,7 +109,7 @@ abstract class Template {
         /**
      * Explodes string in format [sizeNumber][space][sizeType] i.e.: 11.6 GB
      * 
-     * @param type $stringSize
+     * @param type $sizeString
      * @return Size
      */
     protected function explodeSizeBySpace($sizeString) {
@@ -130,6 +134,13 @@ abstract class Template {
 
     public function setQuery($query) {
         $this->query = $query;
+    }
+    
+    protected function setDefaultsOnTorrent(Torrents $torrent) {
+        $torrent->setPeers(0);
+        $torrent->setSeeds(0);
+        $torrent->setSizeOriginal('0 MB');
+        $torrent->setSize(0);
     }
     
 }

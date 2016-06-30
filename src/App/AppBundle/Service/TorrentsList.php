@@ -141,13 +141,13 @@ class TorrentsList {
         $provider->setQuery($this->queryDbObject->getValue());
         try{
             $list = $provider->getTorrentList();
+            $this->updateListOfLinksInDb($list);
+            $this->updateUpdateDateQueryObj();
+            $this->queryRepository->setParsingInProgressInActive($this->queryDbObject);
+            return $list;
         }catch(\Exception $e) {
             $this->errorWhileParsingExternalSystem();
         }
-        $this->updateListOfLinksInDb($list);
-        $this->updateUpdateDateQueryObj();
-        $this->queryRepository->setParsingInProgressInActive($this->queryDbObject);
-        return $list;
     }
     
     private function errorWhileParsingExternalSystem() {

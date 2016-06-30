@@ -8,9 +8,9 @@ class Size{
     const SIZE_TYPE_MB = 'MB';
     const SIZE_TYPE_GB = 'GB';
     
-    public $value;
+    public $value = 0;
     
-    public $type;
+    public $type = 'MB';
     
     public static function getSizeTypesAsArray() {
         return array(

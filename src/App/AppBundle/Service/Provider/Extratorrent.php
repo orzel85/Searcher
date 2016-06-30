@@ -3,6 +3,7 @@
 namespace App\AppBundle\Service\Provider;
 
 use App\AppBundle\Entity\Torrents;
+use App\AppBundle\Model\Size;
 
 class Extratorrent extends Template {
     
@@ -19,29 +20,58 @@ class Extratorrent extends Template {
         $doc->loadHTML($pageContent);
         $xpath = new \DOMXpath($doc);
         $resultsListNode = $xpath->query('//table[@class="tl"]');
+        if(empty($resultsListNode)) {
+            return null;
+        }
         $resultsNode = $resultsListNode->item(0);
+        if(empty($resultsNode)) {
+            return null;
+        }
         $resultsList = $resultsNode->getElementsByTagName('tr');
+        if(empty($resultsList)) {
+            return null;
+        }
         $length = $resultsList->length;
-//        var_dump($length);
-//        die();
-        $torrentsList = array();
         for($i = 2 ; $i < $length ; $i++) {
             $torrent = new Torrents();
-            $this->parseSinglElement($resultsList->item($i), $torrent);
-            $this->addToTorrentList($torrent);
+            $element = $resultsList->item($i);
+            if(!empty($element)) {
+                $this->parseSinglElement($element, $torrent);
+                $this->addToTorrentList($torrent);
+            }
         }
         return $this->torrentList;
     }
     
     private function parseSinglElement(\DOMElement $domNode, Torrents $torrent) {
+        $torrent->setProvider(Controller::EXTRATORRENT);
         $aList = $domNode->getElementsByTagName('a');
+        if(empty($aList)) {
+            $this->dontAddToTorrentList();
+            return;
+        }
         $link = $aList->item($aList->length - 2);
+        if(empty($link)) {
+            $this->dontAddToTorrentList();
+            return;
+        }
         $href = $this->getHrefAttributeFromHyperlinkNode($link);
+        if(empty($href)) {
+            $this->dontAddToTorrentList();
+            return;
+        }
         if(strpos($href, 'extratorrent.cc') != false) {
             $this->dontAddToTorrentList();
         }
         $name = $this->getValueFromHyperlinkNode($link);
         $tdList = $domNode->getElementsByTagName('td');
+        $torrent->setName($name);
+        $link = $this->providerUrl . $href;
+        $torrent->setLink($link);
+        if(empty($tdList)) {
+            $this->setDefaultsOnTorrent($torrent);
+            return;
+        }
         $seeds = 0;
         $peers = 0;
         foreach($tdList as $td) {
@@ -55,17 +85,28 @@ class Extratorrent extends Template {
                 }
             }
         }
-        $link = $this->providerUrl . $href;
-        $torrent->setName($name);
-        $torrent->setLink($link);
+        
         $torrent->setPeers($peers);
         $torrent->setSeeds($seeds);
-        $torrent->setProvider(Controller::EXTRATORRENT);
-        $this->setSize($tdList->item(3),  $torrent);
+        $sizeNode = $tdList->item(3);
+        if(!empty($sizeNode)) {
+            $this->setSize($sizeNode,  $torrent);
+        }else{
+            $torrent->setSizeOriginal('0 '. Size::SIZE_TYPE_MB);
+            $torrent->setSize(0);
+        }
     }
     
     private function setSize(\DOMElement $domNode, Torrents $torrent) {
+        $torrent->setSizeOriginal('0 '. Size::SIZE_TYPE_MB);
+        $torrent->setSize(0);
+        if(empty($domNode->nodeValue)) {
+            return;
+        }
         $size = $this->explodeSizeByNbsp($domNode->nodeValue);
+        if(empty($size)) {
+            return;
+        }
         $sizeToDb = $this->parseSize($size->value, $size->type);
         $torrent->setSizeOriginal($size->value. ' '. $size->type);
         $torrent->setSize($sizeToDb);

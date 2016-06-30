@@ -3,6 +3,7 @@
 namespace App\AppBundle\Service\Provider;
 
 use App\AppBundle\Entity\Torrents;
+use App\AppBundle\Model\Size;
 
 class Kickasstorrent extends Template {
     
@@ -19,32 +20,75 @@ class Kickasstorrent extends Template {
         $doc->loadHTML($pageContent);
         $xpath = new \DOMXpath($doc);
         $resultsListNode = $xpath->query('//table[@id="mainSearchTable"]');
+        if(empty($resultsListNode)) {
+            return null;
+        }
         $resultsNode = $resultsListNode->item(0);
+        if(empty($resultsNode)) {
+            return null;
+        }
         $resultsList = $resultsNode->getElementsByTagName('tr');
+        if(empty($resultsList)) {
+            return null;
+        }
         $length = $resultsList->length;
-        $torrentsList = array();
         for($i = 2 ; $i < $length ; $i++) {
             $torrent = new Torrents();
-            $this->parseSinglElement($resultsList->item($i), $torrent);
-            $this->addToTorrentList($torrent);
+            $element = $resultsList->item($i);
+            if(!empty($element)) {
+                $this->parseSinglElement($element, $torrent);
+                $this->addToTorrentList($torrent);
+            }
         }
         return $this->torrentList;
     }
     
     private function parseSinglElement(\DOMElement $domNode, Torrents $torrent) {
+        $torrent->setProvider(Controller::KICKASSTORRENT);
         $link = $this->getFirstElementByTagAndAttribute($domNode, 'a', 'class', 'cellMainLink');
+        if(empty($link)) {
+            $this->dontAddToTorrentList();
+            return;
+        }
         $href = $this->getHrefAttributeFromHyperlinkNode($link);
+        if(empty($href)) {
+            $this->dontAddToTorrentList();
+            return;
+        }
         $name = $this->getValueFromHyperlinkNode($link);
+        if(empty($name)) {
+            $this->dontAddToTorrentList();
+            return;
+        }
         $tdList = $domNode->getElementsByTagName('td');
-        $seeds = $tdList->item(4)->nodeValue;
-        $peers = $tdList->item(5)->nodeValue;
-        $link = $this->providerUrl . $href;
+        if(empty($tdList)) {
+            $this->setDefaultsOnTorrent();
+            return;
+        }
         $torrent->setName($name);
+        $link = $this->providerUrl . $href;
         $torrent->setLink($link);
+        $seedsTd = $tdList->item(4);
+        if(!empty($seedsTd)) {
+            $seeds = $seedsTd->nodeValue;
+        }else{
+            $seeds = 0;
+        }
+        $peersTd = $tdList->item(5);
+        if(!empty($peersTd)) {
+            $peers = $peersTd->nodeValue;
+        }else{
+            $peers = 0;
+        }
         $torrent->setPeers($peers);
         $torrent->setSeeds($seeds);
-        $torrent->setProvider(Controller::KICKASSTORRENT);
-        $this->setSize($tdList->item(1),  $torrent);
+        $torrent->setSizeOriginal('0 '. Size::SIZE_TYPE_MB);
+        $torrent->setSize(0);
+        $sizeNode = $tdList->item(1);
+        if(!empty($sizeNode)) {
+            $this->setSize($sizeNode,  $torrent);
+        }
+        
     }
     
     private function setSize(\DOMElement $domNode, Torrents $torrent) {
@@ -53,8 +97,6 @@ class Kickasstorrent extends Template {
         $torrent->setSizeOriginal($size->value . ' '. $size->type);
         $torrent->setSize($sizeToDb);
     }
-
-    
     
     private function createUrl() {
         if($this->page == 1) {
